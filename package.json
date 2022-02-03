@@ -1,5 +1,5 @@
 {
-  "name": "react18sample",
+  "name": "react18-bootcamp",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,15 +8,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "12.0.9",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "@stitches/react": "^1.2.6",
+    "framer-motion": "^5",
+    "next": "^12.0.9",
+    "react": "^18.0.0-rc.0",
+    "react-dom": "^18.0.0-rc.0",
+    "swr": "^1.2.0"
   },
   "devDependencies": {
     "@types/node": "17.0.13",
-    "@types/react": "17.0.38",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
     "eslint": "8.8.0",
     "eslint-config-next": "12.0.9",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "2.5.1",
     "typescript": "4.5.5"
   }
 }
