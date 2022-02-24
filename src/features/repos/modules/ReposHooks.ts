@@ -1,9 +1,13 @@
+import { Octokit } from "@octokit/rest";
 import useSWR from "swr";
-import { API_ENDPOINTS, handleApiError, ORIGIN } from "../../../lib/api";
-import { getRepos, GetReposRequest } from "./reposApi";
+import { handleApiError } from "../../../lib/api";
 
-export const useRepos = ({ org, type }: GetReposRequest) => {
-  const { data, error } = useSWR(getKey({ org, type }), fetcher, {
+type GetReposRequest = {
+  org: string;
+};
+
+export const useRepos = ({ org }: GetReposRequest) => {
+  const { data, error } = useSWR(getKey({ org }), fetcher, {
     revalidateIfStale: false,
   });
 
@@ -14,20 +18,23 @@ export const useRepos = ({ org, type }: GetReposRequest) => {
   };
 };
 
-const getKey = ({ org, type }: GetReposRequest) => {
+const getKey = ({ org }: GetReposRequest) => {
   return {
-    key: `${ORIGIN}/${API_ENDPOINTS.orgs.orgsRepos(org)}`,
+    key: `${Octokit.name}/repos/listForOrg`,
     org,
-    type,
   };
 };
 
-const fetcher = async ({ org, type }: ReturnType<typeof getKey>) => {
-  const result = await getRepos({ org, type }).catch(handleApiError);
+const fetcher = async ({ org }: ReturnType<typeof getKey>) => {
+  const result = await new Octokit().repos
+    .listForOrg({
+      org,
+    })
+    .catch(handleApiError);
 
   if (result instanceof Error) {
     throw result;
   }
 
-  return result;
+  return result.data;
 };

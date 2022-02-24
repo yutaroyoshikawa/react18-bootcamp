@@ -1,5 +1,6 @@
 import { FC, Suspense } from "react";
 import { css } from "../../../style";
+import { useTheme } from "../../appSettings/modules/themeHooks";
 import { useRepos } from "../modules/ReposHooks";
 
 type ReposProps = {
@@ -8,19 +9,24 @@ type ReposProps = {
 
 export const Repos: FC<ReposProps> = ({ org }) => {
   const { data } = useRepos({ org });
+  const [theme] = useTheme();
 
   return (
-    <Suspense fallback={ReposSkeleton}>
-      {data && (
-        <ul className={styles.list()}>
-          {data.map((repo) => (
-            <li key={repo.id} className={styles.item()}>
-              {repo.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </Suspense>
+    <>
+      <p>{theme}</p>
+
+      <Suspense fallback={ReposSkeleton}>
+        {data && (
+          <ul className={styles.list()}>
+            {data.map((repo) => (
+              <li key={repo.id} className={styles.item()}>
+                {repo.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Suspense>
+    </>
   );
 };
 
