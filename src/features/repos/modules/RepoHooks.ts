@@ -2,12 +2,13 @@ import { Octokit } from "@octokit/rest";
 import useSWR from "swr";
 import { handleApiError } from "../../../lib/api";
 
-type GetReposRequest = {
-  org: string;
+type GetRepoRequest = {
+  owner: string;
+  repo: string;
 };
 
-export const useRepos = ({ org }: GetReposRequest) => {
-  const { data, error } = useSWR(getKey({ org }), fetcher, {
+export const useRepo = ({ owner, repo }: GetRepoRequest) => {
+  const { data, error } = useSWR(getKey({ owner, repo }), fetcher, {
     revalidateIfStale: false,
     suspense: true,
   });
@@ -19,17 +20,19 @@ export const useRepos = ({ org }: GetReposRequest) => {
   };
 };
 
-const getKey = ({ org }: GetReposRequest) => {
+const getKey = ({ owner, repo }: GetRepoRequest) => {
   return {
-    key: `${Octokit.name}/repos/listForOrg`,
-    org,
+    key: `${Octokit.name}/repos/get`,
+    owner,
+    repo,
   };
 };
 
-const fetcher = async ({ org }: ReturnType<typeof getKey>) => {
+const fetcher = async ({ owner, repo }: ReturnType<typeof getKey>) => {
   const result = await new Octokit().repos
-    .listForOrg({
-      org,
+    .get({
+      owner,
+      repo,
     })
     .catch(handleApiError);
 
