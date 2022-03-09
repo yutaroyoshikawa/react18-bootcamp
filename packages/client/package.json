@@ -28,6 +28,7 @@
   "homepage": "https://github.com/yutaroyoshikawa/react18-bootcamp#readme",
   "dependencies": {
     "@emotion/css": "^11.7.1",
+    "@stitches/core": "^1.2.7",
     "@tanstack/react-location": "^3.7.0",
     "react": "^18.0.0-rc.2",
     "react-dom": "^18.0.0-rc.2",
