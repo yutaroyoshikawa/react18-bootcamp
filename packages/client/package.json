@@ -1,0 +1,66 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc",
+    "lint": "eslint --ext ts,tsx,js .",
+    "format": "eslint --fix --ext ts,tsx,js .",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test": "vitest --config ./vitest.config.ts",
+    "coverage": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yutaroyoshikawa/react18-bootcamp.git"
+  },
+  "keywords": [],
+  "author": "yutaroyoshikawa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yutaroyoshikawa/react18-bootcamp/issues"
+  },
+  "homepage": "https://github.com/yutaroyoshikawa/react18-bootcamp#readme",
+  "dependencies": {
+    "@emotion/css": "^11.7.1",
+    "@tanstack/react-location": "^3.7.0",
+    "react": "^18.0.0-rc.2",
+    "react-dom": "^18.0.0-rc.2",
+    "react-helmet": "^6.1.0",
+    "react-modal": "^3.14.4",
+    "react-transition-group": "^4.4.2",
+    "swr": "^1.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@storybook/addon-actions": "^6.4.19",
+    "@storybook/addon-essentials": "^6.4.19",
+    "@storybook/addon-interactions": "^6.4.19",
+    "@storybook/addon-links": "^6.4.19",
+    "@storybook/react": "^6.4.19",
+    "@storybook/testing-library": "^0.0.9",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "@vitejs/plugin-react": "^1.2.0",
+    "babel-loader": "^8.2.3",
+    "eslint": "^8.10.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-react": "^7.29.3",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-storybook": "^0.5.7",
+    "prettier": "^2.5.1",
+    "react-test-renderer": "^17.0.2",
+    "typescript": "^4.6.2",
+    "vite": "^2.8.6",
+    "vitest": "^0.6.0"
+  }
+}
