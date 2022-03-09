@@ -6,7 +6,9 @@ type Theme = {
   };
 };
 
-export const { getCssText, css, globalCss, createTheme } = createStitches();
+const { css, globalCss, createTheme } = createStitches();
+
+export { css };
 
 export const lightTheme = createTheme<Theme, string>({
   colors: {
@@ -20,14 +22,8 @@ export const darkTheme = createTheme<Theme, string>({
   },
 });
 
-export const lightGlobalStyles = globalCss({
+export const globalStyles = globalCss({
   body: {
     backgroundColor: "#FFF",
-  },
-});
-
-export const darkGlobalStyles = globalCss({
-  body: {
-    backgroundColor: "#000",
   },
 });

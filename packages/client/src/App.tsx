@@ -1,11 +1,17 @@
-import type { FC } from "react";
-import { useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { useThemeClass } from "../src/features/appSettings/modules/themeHooks";
+import { globalStyles } from "../src/style";
 
 export const App: FC = () => {
   const [count, setCount] = useState(0);
+  const themeClass = useThemeClass();
+
+  useEffect(() => {
+    globalStyles();
+  }, []);
 
   return (
-    <div className="App">
+    <div className={themeClass}>
       <header className="App-header">
         <p>Hello Vite + React!</p>
         <p>
