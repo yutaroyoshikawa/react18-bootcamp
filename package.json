@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:client": "npm run dev --workspace=client",
+    "build:client": "npm run dev --workspace=client",
+    "build:api-client": "npm run build --workspace=api-server",
+    "code-generate:api-client": "npm run code-generate --workspace=api-server"
   },
   "repository": {
     "type": "git",
