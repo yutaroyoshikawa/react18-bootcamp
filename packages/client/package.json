@@ -29,11 +29,11 @@
   "dependencies": {
     "@emotion/css": "^11.7.1",
     "@stitches/core": "^1.2.7",
-    "@tanstack/react-location": "^3.7.0",
     "react": "^18.0.0-rc.2",
     "react-dom": "^18.0.0-rc.2",
     "react-helmet": "^6.1.0",
     "react-modal": "^3.14.4",
+    "react-router-dom": "^6.2.2",
     "react-transition-group": "^4.4.2",
     "swr": "^1.2.2"
   },
