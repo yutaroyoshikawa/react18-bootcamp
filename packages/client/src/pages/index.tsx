@@ -1,5 +1,14 @@
 import type { FC } from "react";
+import { Helmet } from "react-helmet";
+import { HomePageContent } from "../layouts/HomePageContent";
 
 export const Home: FC = () => {
-  return <h1>トップページ</h1>;
+  return (
+    <>
+      <Helmet>
+        <title>トップページ</title>
+      </Helmet>
+      <HomePageContent />
+    </>
+  );
 };
