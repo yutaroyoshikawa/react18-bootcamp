@@ -1,66 +1,42 @@
-import { useCallback, useEffect, useState } from "react";
+import { ApiError, DefaultService } from "api-server";
+import useSWR from "swr";
 import { apiClient, handleApiError } from "../../../lib/api";
+import { PromiseType } from "../../../type";
 
-type TestState =
-  | {
-      status: "initial";
-      payload: undefined;
-      error: undefined;
-    }
-  | {
-      status: "loading";
-      payload?: string;
-      error?: Error;
-    }
-  | {
-      status: "success";
-      payload: string;
-      error: undefined;
-    }
-  | {
-      status: "failed";
-      payload: undefined;
-      error: Error;
-    };
+type GetKeyRequest = {
+  name: string;
+};
 
-export const useTest = () => {
-  const [state, setState] = useState<TestState>({
-    status: "initial",
-    payload: undefined,
-    error: undefined,
+export const useTest = ({ name }: GetKeyRequest) => {
+  const { data, error } = useSWR<
+    PromiseType<ReturnType<typeof fetcher>>,
+    Error | ApiError
+  >(getKey({ name }), fetcher, {
+    suspense: true,
   });
 
-  const fetchTest = useCallback(async () => {
-    setState((prev) => ({
-      ...prev,
-      status: "loading",
-    }));
+  return {
+    data,
+    error,
+    loading: !data && !error,
+  };
+};
 
-    const result = await apiClient.default
-      .getTest({ name: "Hello World" })
-      .catch(handleApiError);
+const getKey = ({ name }: { name: string }) => {
+  return {
+    key: `${DefaultService.name}/${DefaultService.prototype.getTest.name}`,
+    name,
+  };
+};
 
-    if (result instanceof Error) {
-      setState({
-        status: "failed",
-        payload: undefined,
-        error: result,
-      });
-      return;
-    }
+const fetcher = async ({ name }: ReturnType<typeof getKey>) => {
+  const result = await apiClient.default
+    .getTest({ name })
+    .catch(handleApiError);
 
-    setState({
-      status: "success",
-      payload: result,
-      error: undefined,
-    });
+  if (result instanceof Error) {
+    throw result;
+  }
 
-    console.log(result);
-  }, []);
-
-  useEffect(() => {
-    fetchTest();
-  }, [fetchTest]);
-
-  return state;
+  return result;
 };

@@ -6,7 +6,7 @@ import { useTheme } from "../features/app/modules/themeHooks";
 export const HomePageContent: FC = () => {
   const [theme, setTheme] = useTheme();
 
-  const state = useTest();
+  const state = useTest({ name: "hello world" });
 
   return (
     <>
