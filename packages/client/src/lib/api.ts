@@ -1,12 +1,13 @@
-import { Configuration } from "api-server";
+import { ApiClient, ApiError } from "api-server";
 
-export const handleApiError = (error: Error) => {
+export const handleApiError = (error: Error | ApiError) => {
   console.error(error);
   return error;
 };
 
-export const getApiConfig = () => {
-  return new Configuration({
-    basePath: import.meta.env.VITE_APP_API_BASE_URL,
-  });
-};
+export const apiClient = new ApiClient({
+  BASE: import.meta.env.VITE_APP_API_BASE_URL,
+  HEADERS: {
+    "Access-Control-Allow-Origin": "no-cors",
+  },
+});

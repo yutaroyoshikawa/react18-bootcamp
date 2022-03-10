@@ -1,9 +1,12 @@
 import type { FC } from "react";
+import { useTest } from "../../src/features/app/modules/testHooks";
 import { Heading } from "../features/app/components/Heading";
 import { useTheme } from "../features/app/modules/themeHooks";
 
 export const HomePageContent: FC = () => {
   const [theme, setTheme] = useTheme();
+
+  const state = useTest();
 
   return (
     <>
@@ -16,6 +19,7 @@ export const HomePageContent: FC = () => {
       >
         toggle
       </button>
+      <p>{JSON.stringify(state)}</p>
     </>
   );
 };

@@ -13,7 +13,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "vitest --config ./vitest.config.ts",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "setup:env": "cp ./.env.example ./.env.$APP_ENV"
   },
   "repository": {
     "type": "git",

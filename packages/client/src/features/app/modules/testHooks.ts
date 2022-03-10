@@ -1,6 +1,5 @@
-import { DefaultApi } from "api-server";
 import { useCallback, useEffect, useState } from "react";
-import { getApiConfig, handleApiError } from "../../../lib/api";
+import { apiClient, handleApiError } from "../../../lib/api";
 
 type TestState =
   | {
@@ -37,12 +36,8 @@ export const useTest = () => {
       status: "loading",
     }));
 
-    const config = getApiConfig();
-
-    const result = await new DefaultApi(config)
-      .getTest({
-        name: "hello world",
-      })
+    const result = await apiClient.default
+      .getTest({ name: "Hello World" })
       .catch(handleApiError);
 
     if (result instanceof Error) {
