@@ -28,6 +28,8 @@ export const Heading: VFC<HeadingProps> = ({
   }
 };
 
-const h1Style = css();
+const h1Style = css({
+  background: "$background",
+});
 
 const h2Style = css();
