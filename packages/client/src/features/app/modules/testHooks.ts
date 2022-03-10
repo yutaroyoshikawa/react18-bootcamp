@@ -1,6 +1,6 @@
-import { Configuration, DefaultApi } from "api-server";
+import { DefaultApi } from "api-server";
 import { useCallback, useEffect, useState } from "react";
-import { handleApiError } from "../../../lib/api";
+import { getApiConfig, handleApiError } from "../../../lib/api";
 
 type TestState =
   | {
@@ -37,9 +37,7 @@ export const useTest = () => {
       status: "loading",
     }));
 
-    const config = new Configuration({
-      basePath: "http://localhost:3000",
-    });
+    const config = getApiConfig();
 
     const result = await new DefaultApi(config)
       .getTest({
