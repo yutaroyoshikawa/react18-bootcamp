@@ -1,6 +1,14 @@
 import type { FC } from "react";
 import { Heading } from "../features/app/components/Heading";
+import { useTest } from "../features/app/modules/testHooks";
 
 export const HomePageContent: FC = () => {
-  return <Heading tag="h1">トップページ</Heading>;
+  const testState = useTest();
+
+  return (
+    <>
+      <Heading tag="h1">トップページ</Heading>
+      <>{JSON.stringify(testState)}</>
+    </>
+  );
 };
