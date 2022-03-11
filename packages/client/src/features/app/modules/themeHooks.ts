@@ -1,7 +1,7 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import type { Store } from "../../../lib/store";
 import { setState, useStore } from "../../../lib/store";
-import { darkTheme, lightTheme } from "../../../style";
+import { darkTheme, lightTheme } from "../../../lib/style";
 
 export const useTheme = () => {
   const theme = useStore((store) => store.theme);
@@ -22,5 +22,12 @@ export const useTheme = () => {
 export const useThemeClass = () => {
   const [theme] = useTheme();
 
-  return theme === "light" ? lightTheme : darkTheme;
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    document.body.classList.remove(theme === "light" ? darkTheme : lightTheme);
+    document.body.classList.add(theme === "light" ? lightTheme : darkTheme);
+  }, [theme]);
 };

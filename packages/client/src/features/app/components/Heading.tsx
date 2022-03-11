@@ -1,5 +1,5 @@
 import type { HTMLAttributes, PropsWithChildren, VFC } from "react";
-import { css } from "../../../style";
+import { css } from "../../../lib/style";
 
 export type HeadingProps = PropsWithChildren<
   {
