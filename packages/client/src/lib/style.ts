@@ -20,6 +20,7 @@ const themeKey = {
     textDark: "text-dark",
     title: "title",
     titleDark: "title-dark",
+    button: "button",
     background: "background",
     backgroundSub: "background-sub",
     backgroundSubDark: "background-sub-dark",
@@ -47,6 +48,9 @@ const themeKey = {
     elevationLow: "elevation-low",
     elevationMid: "elevation-mid",
     elevationHigh: "elevation-high",
+  },
+  radii: {
+    radius1: "radius-1",
   },
 } as const;
 
@@ -84,6 +88,7 @@ const {
       [themeKey.colors.textDark]: "#FFFFFF",
       [themeKey.colors.title]: "#0D1C2E",
       [themeKey.colors.titleDark]: "#FFFFFF",
+      [themeKey.colors.button]: "#FFFFFF",
     },
     fontSizes: {
       [themeKey.fontSizes[1]]: "16px",
@@ -110,6 +115,9 @@ const {
         .elevationMid]: `-0.6px 0px 0.7px hsl(${shadowColor} / 0.17),-1.8px 0.1px 2.1px -0.7px hsl(${shadowColor} / 0.19),-4.2px 0.2px 5px -1.4px hsl(${shadowColor} / 0.2),-9.8px 0.5px 11.6px -2.1px hsl(${shadowColor} / 0.22)`,
       [themeKey.shadows
         .elevationHigh]: `-0.6px 0px 0.7px hsl(${shadowColor} / 0.18),-2.9px 0.1px 3.4px -0.4px hsl(${shadowColor} / 0.19),-5.2px 0.3px 6.1px -0.7px hsl(${shadowColor} / 0.2),-8.7px 0.4px 10.3px -1.1px hsl(${shadowColor} / 0.21),-14.3px 0.7px 16.9px -1.4px hsl(${shadowColor} / 0.22),-22.9px 1.1px 27px -1.8px hsl(${shadowColor} / 0.23),-35.6px 1.7px 42px -2.1px hsl(${shadowColor} / 0.23)`,
+    },
+    radii: {
+      [themeKey.radii.radius1]: "6px",
     },
   },
 });
