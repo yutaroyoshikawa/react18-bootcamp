@@ -35,8 +35,18 @@ const themeKey = {
     base: "base",
   },
   space: {
+    1: "1",
+    2: "2",
+    3: "3",
     4: "4",
     5: "5",
+    6: "6",
+    7: "7",
+  },
+  shadows: {
+    elevationLow: "elevation-low",
+    elevationMid: "elevation-mid",
+    elevationHigh: "elevation-high",
   },
 } as const;
 
@@ -47,6 +57,8 @@ export const theme = <T extends string>(
 
   return `$${key}` as const;
 };
+
+const shadowColor = "0deg 0% 0%";
 
 const {
   css,
@@ -83,8 +95,21 @@ const {
       [themeKey.fonts.base]: "'Noto Sans JP', sans-serif",
     },
     space: {
+      [themeKey.space[1]]: "8px",
+      [themeKey.space[2]]: "16px",
+      [themeKey.space[3]]: "20px",
       [themeKey.space[4]]: "40px",
-      [themeKey.space[5]]: "90px",
+      [themeKey.space[5]]: "60px",
+      [themeKey.space[6]]: "90px",
+      [themeKey.space[7]]: "100px",
+    },
+    shadows: {
+      [themeKey.shadows
+        .elevationLow]: `-0.6px 0px 0.7px hsl(${shadowColor} / 0.16),-0.9px 0px 1.1px -1.1px hsl(${shadowColor} / 0.18),-2px 0.1px 2.4px -2.1px hsl(${shadowColor} / 0.2)`,
+      [themeKey.shadows
+        .elevationMid]: `-0.6px 0px 0.7px hsl(${shadowColor} / 0.17),-1.8px 0.1px 2.1px -0.7px hsl(${shadowColor} / 0.19),-4.2px 0.2px 5px -1.4px hsl(${shadowColor} / 0.2),-9.8px 0.5px 11.6px -2.1px hsl(${shadowColor} / 0.22)`,
+      [themeKey.shadows
+        .elevationHigh]: `-0.6px 0px 0.7px hsl(${shadowColor} / 0.18),-2.9px 0.1px 3.4px -0.4px hsl(${shadowColor} / 0.19),-5.2px 0.3px 6.1px -0.7px hsl(${shadowColor} / 0.2),-8.7px 0.4px 10.3px -1.1px hsl(${shadowColor} / 0.21),-14.3px 0.7px 16.9px -1.4px hsl(${shadowColor} / 0.22),-22.9px 1.1px 27px -1.8px hsl(${shadowColor} / 0.23),-35.6px 1.7px 42px -2.1px hsl(${shadowColor} / 0.23)`,
     },
   },
 });

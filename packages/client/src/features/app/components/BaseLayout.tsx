@@ -1,5 +1,5 @@
 import type { ReactNode, VFC } from "react";
-import { css } from "../../../lib/style";
+import { css, theme } from "../../../lib/style";
 import { useTheme } from "../modules/themeHooks";
 import { Navigation } from "./Navigation";
 
@@ -15,7 +15,7 @@ export const BaseLayout: VFC<BaseLayoutProps> = ({ children }) => {
       <header>
         <Navigation variant={theme} />
       </header>
-      <main>{children}</main>
+      <main className={mainStyle()}>{children}</main>
     </div>
   );
 };
@@ -23,4 +23,10 @@ export const BaseLayout: VFC<BaseLayoutProps> = ({ children }) => {
 const containerStyle = css({
   display: "flex",
   height: "100%",
+});
+
+const mainStyle = css({
+  padding: `${theme(({ space }) => space[4])} ${theme(
+    ({ space }) => space[6]
+  )}`,
 });

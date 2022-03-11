@@ -1,8 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { FC } from "react";
 import { css, theme } from "../../../lib/style";
 import { useTheme } from "../modules/themeHooks";
 import { Heading } from "./Heading";
+import { Icon } from "./Icon";
 
 type NavigationProps = {
   variant: "light" | "dark";
@@ -32,13 +32,14 @@ const containerStyle = css({
   height: "100%",
   minHeight: "320px",
   padding: `${theme(({ space }) => space[5])} ${theme(
-    ({ space }) => space[4]
+    ({ space }) => space[3]
   )}`,
   boxSizing: "border-box",
   display: "flex",
   flexFlow: "column",
   justifyContent: "space-between",
   alignItems: "flex-start",
+  boxShadow: theme(({ shadows }) => shadows.elevationHigh),
   backgroundColor: theme(({ colors }) => colors.backgroundSub),
   '&[data-variant="dark"]': {
     backgroundColor: theme(({ colors }) => colors.backgroundSubDark),
@@ -61,11 +62,10 @@ const ToggleThemeButton: FC<ToggleThemeButtonProps> = ({
       onClick={onClick}
       data-variant={variant}
     >
-      <FontAwesomeIcon
-        icon={variant === "light" ? ["fas", "moon"] : ["fas", "sun"]}
-        style={{
-          color: variant === "light" ? "#0D1C2E" : "#FFFFFF",
-        }}
+      <Icon
+        icon={variant === "light" ? "moon" : "sun"}
+        variant={variant}
+        size="lg"
       />
     </button>
   );
