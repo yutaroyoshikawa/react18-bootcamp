@@ -17,6 +17,7 @@ export const h1: ComponentStoryObj<typeof Heading> = {
   render: (args) => <Component {...args} />,
   args: {
     tag: "h1",
+    variant: "light",
   },
 };
 
@@ -24,5 +25,6 @@ export const h2: ComponentStoryObj<typeof Heading> = {
   render: (args) => <Component {...args} />,
   args: {
     tag: "h2",
+    variant: "light",
   },
 };

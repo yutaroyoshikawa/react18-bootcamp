@@ -19,7 +19,9 @@ const PageContent: FC = () => {
 
   return (
     <>
-      <Heading tag="h1">トップページ</Heading>
+      <Heading tag="h1" variant={theme}>
+        トップページ
+      </Heading>
       <>{theme}</>
       <button
         onClick={() =>

@@ -1,27 +1,29 @@
 import type { HTMLAttributes, PropsWithChildren, VFC } from "react";
-import { css } from "../../../lib/style";
+import { css, theme } from "../../../lib/style";
 
 export type HeadingProps = PropsWithChildren<
   {
     tag: "h1" | "h2";
+    variant: "light" | "dark";
   } & Omit<HTMLAttributes<HTMLHeadingElement>, "className">
 >;
 
 export const Heading: VFC<HeadingProps> = ({
   children,
   tag,
+  variant,
   ...headingProps
 }) => {
   switch (tag) {
     case "h1":
       return (
-        <h1 {...headingProps} className={h1Style()}>
+        <h1 {...headingProps} className={h1Style()} data-variant={variant}>
           {children}
         </h1>
       );
     case "h2":
       return (
-        <h2 {...headingProps} className={h2Style()}>
+        <h2 {...headingProps} className={h2Style()} data-variant={variant}>
           {children}
         </h2>
       );
@@ -29,7 +31,19 @@ export const Heading: VFC<HeadingProps> = ({
 };
 
 const h1Style = css({
-  background: "$background",
+  margin: 0,
+  color: theme(({ colors }) => colors.title).value,
+  fontSize: theme(({ fontSizes }) => fontSizes[4]).value,
+  '&[data-variant="dark"]': {
+    color: theme(({ colors }) => colors.titleDark).value,
+  },
 });
 
-const h2Style = css();
+const h2Style = css({
+  margin: 0,
+  color: theme(({ colors }) => colors.title).value,
+  fontSize: theme(({ fontSizes }) => fontSizes[2]).value,
+  '&[data-variant="dark"]': {
+    color: theme(({ colors }) => colors.titleDark).value,
+  },
+});

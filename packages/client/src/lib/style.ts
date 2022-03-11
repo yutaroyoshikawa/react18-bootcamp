@@ -12,6 +12,9 @@ const themeKey = {
     action: "action",
     link: "link",
     text: "text",
+    textDark: "text-dark",
+    title: "title",
+    titleDark: "title-dark",
     background: "background",
     backgroundSub: "background-sub",
     backgroundBase: "background-base",
@@ -40,6 +43,12 @@ export const theme = <T extends string>(
   };
 };
 
+export const breakpoints = {
+  sm: "@media screen and (max-width:599px)",
+  md: "@media screen and (min-width:600px)",
+  lg: "@media screen and (min-width:1025px)",
+} as const;
+
 const {
   css,
   globalCss,
@@ -49,15 +58,18 @@ const {
   theme: {
     colors: {
       [theme(({ colors }) => colors.background).key]:
-        "linear-gradient(45deg, #FFF7F0, #FFF5FF)",
+        "linear-gradient(90deg, #FFF7F0, #FFF5FF)",
       [theme(({ colors }) => colors.backgroundSub).key]: "#5F5F5F",
       [theme(({ colors }) => colors.backgroundBase).key]: "#FFFFFF",
       [theme(({ colors }) => colors.accent).key]: "#FEA82F",
       [theme(({ colors }) => colors.action).key]:
-        "linear-gradient(45deg, #FF9C65, #FFB884)",
+        "linear-gradient(90deg, #FF9C65, #FFB884)",
       [theme(({ colors }) => colors.link).key]:
-        "linear-gradient(45deg, #96CEB4, #8AB8C7)",
+        "linear-gradient(90deg, #96CEB4, #8AB8C7)",
       [theme(({ colors }) => colors.text).key]: "#707C97",
+      [theme(({ colors }) => colors.textDark).key]: "#FFFFFF",
+      [theme(({ colors }) => colors.title).key]: "#0D1C2E",
+      [theme(({ colors }) => colors.titleDark).key]: "#FFFFFF",
     },
     fontSizes: {
       [theme(({ fontSizes }) => fontSizes[1]).key]: "16px",
