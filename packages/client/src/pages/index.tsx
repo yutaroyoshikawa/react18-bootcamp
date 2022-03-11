@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { useTest } from "../../src/features/app/modules/testHooks";
+import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Heading } from "../features/app/components/Heading";
 import { useTheme } from "../features/app/modules/themeHooks";
 
@@ -7,7 +8,9 @@ export const Home: FC = () => {
   return (
     <>
       {/* <Helmet title="トップページ" /> */}
-      <PageContent />
+      <BaseLayout>
+        <PageContent />
+      </BaseLayout>
     </>
   );
 };

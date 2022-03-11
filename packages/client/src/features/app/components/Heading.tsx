@@ -32,18 +32,18 @@ export const Heading: VFC<HeadingProps> = ({
 
 const h1Style = css({
   margin: 0,
-  color: theme(({ colors }) => colors.title).value,
-  fontSize: theme(({ fontSizes }) => fontSizes[4]).value,
+  color: theme(({ colors }) => colors.title),
+  fontSize: theme(({ fontSizes }) => fontSizes[4]),
   '&[data-variant="dark"]': {
-    color: theme(({ colors }) => colors.titleDark).value,
+    color: theme(({ colors }) => colors.titleDark),
   },
 });
 
 const h2Style = css({
   margin: 0,
-  color: theme(({ colors }) => colors.title).value,
-  fontSize: theme(({ fontSizes }) => fontSizes[2]).value,
+  color: theme(({ colors }) => colors.title),
+  fontSize: theme(({ fontSizes }) => fontSizes[2]),
   '&[data-variant="dark"]': {
-    color: theme(({ colors }) => colors.titleDark).value,
+    color: theme(({ colors }) => colors.titleDark),
   },
 });
