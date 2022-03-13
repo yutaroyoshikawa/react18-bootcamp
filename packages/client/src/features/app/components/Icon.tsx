@@ -3,13 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { FC } from "react";
 import { css, theme } from "../../../lib/style";
 
-const icons: Record<"moon" | "sun", FontAwesomeIconProps["icon"]> = {
+type IconName = "moon" | "sun" | "search";
+
+const icons: Record<IconName, FontAwesomeIconProps["icon"]> = {
   moon: ["fas", "moon"],
   sun: ["fas", "sun"],
+  search: ["fas", "search"],
 };
 
 type IconProps = {
-  icon: keyof typeof icons;
+  icon: IconName;
   variant: "light" | "dark";
   size: "sm" | "md" | "lg";
 };

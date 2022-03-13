@@ -23,7 +23,7 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({ community }) => {
         />
       </figure>
       <div className={detailsStyle()}>
-        <div>
+        <div className={summaryInfoStyle()}>
           <Heading tag="h2" variant="light">
             {community.name}
           </Heading>
@@ -68,11 +68,15 @@ const detailsStyle = css({
   justifyContent: "space-between",
 });
 
+const summaryInfoStyle = css({
+  display: "grid",
+  rowGap: theme(({ space }) => space[1]),
+});
+
 const categoryStyle = css({
   color: theme(({ colors }) => colors.accent),
   fontSize: theme(({ fontSizes }) => fontSizes[1]),
   fontFamily: theme(({ fonts }) => fonts.base),
-  padding: `${theme(({ space }) => space[1])} 0`,
 });
 
 const paragraphStyle = css({
