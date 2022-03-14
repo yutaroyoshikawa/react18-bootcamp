@@ -3,6 +3,8 @@ import type { FC } from "react";
 import { useState } from "react";
 import type { ModalProps } from "./Modal";
 import { Modal } from "./Modal";
+import { ModalBody } from "./ModalBody";
+import { ModalFooter } from "./ModalFooter";
 
 const meta: ComponentMeta<typeof Modal> = {
   component: Modal,
@@ -17,7 +19,12 @@ const Component: FC<ModalProps> = (args) => {
     <>
       <button onClick={() => setIsOpen(true)}>表示</button>
       <Modal {...args} isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
-        <p>コンテンツ</p>
+        <ModalBody>
+          <p>コンテンツ</p>
+        </ModalBody>
+        <ModalFooter>
+          <p>フッター</p>
+        </ModalFooter>
       </Modal>
     </>
   );
@@ -28,6 +35,5 @@ export const Base: ComponentStoryObj<typeof Modal> = {
   args: {
     contentLabel: "テスト",
     title: "ダミータイトル",
-    footerArea: <div>フッターエリア</div>,
   },
 };

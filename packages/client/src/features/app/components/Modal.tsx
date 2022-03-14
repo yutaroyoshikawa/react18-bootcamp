@@ -11,16 +11,10 @@ export type ModalProps = PropsWithChildren<{
   onRequestClose: () => void;
   contentLabel: string;
   title: string;
-  footerArea: JSX.Element;
   onAfterClose?: () => void;
 }>;
 
-export const Modal: VFC<ModalProps> = ({
-  children,
-  title,
-  footerArea,
-  ...modalProps
-}) => {
+export const Modal: VFC<ModalProps> = ({ children, title, ...modalProps }) => {
   return (
     <ReactModal
       {...modalProps}
@@ -44,15 +38,14 @@ export const Modal: VFC<ModalProps> = ({
             onClick={modalProps.onRequestClose}
             area-label={`${modalProps.contentLabel}を閉じる`}
           >
-            <Icon icon="search" variant="light" size="sm" />
+            <Icon icon="circleXMark" variant="light" size="sm" />
           </button>
         </div>
         <Heading tag="h2" variant="light">
           {title}
         </Heading>
       </div>
-      <div className={contentsWrapperStyle()}>{children}</div>
-      <div>{footerArea}</div>
+      {children}
     </ReactModal>
   );
 };
@@ -123,9 +116,4 @@ const titleWrapperStyle = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-});
-
-const contentsWrapperStyle = css({
-  height: "calc(100% - 108px)",
-  overflowY: "auto",
 });

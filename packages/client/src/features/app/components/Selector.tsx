@@ -20,6 +20,7 @@ export const Selector: FC<SelectorProps> = ({ options, ...selectorProps }) => {
 };
 
 const containerStyle = css({
+  position: "relative",
   "&::after": {
     content: '">"',
     display: "flex",
@@ -30,8 +31,8 @@ const containerStyle = css({
     fontSize: theme(({ fontSizes }) => fontSizes[2]),
     fontFamily: theme(({ fonts }) => fonts.base),
     position: "absolute",
-    right: theme(({ space }) => space[3]),
-    top: theme(({ space }) => space[3]),
+    right: 0,
+    top: 0,
     zIndex: 1,
     pointerEvents: "none",
     width: "70px",

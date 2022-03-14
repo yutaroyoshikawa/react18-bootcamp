@@ -4,9 +4,9 @@ import { dummyCommunity } from "../../testdata/community";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
-import { Modal } from "../features/app/components/Modal";
 import { useTheme } from "../features/app/modules/themeHooks";
 import { CommunitySummary } from "../features/community/components/CommunitySummary";
+import { CreateCommunityFormModal } from "../features/community/components/CreateCommunityFormModal";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
 import { css, theme } from "../lib/style";
 
@@ -85,16 +85,9 @@ const PageContent: FC = () => {
           layout="vertical"
         />
       </div>
-      <Modal
+      <CreateCommunityFormModal
         isOpen={isOpenModal}
         onRequestClose={() => setIsOpenModal(false)}
-        title="新規コミュニティ"
-        contentLabel="新規コミュニティ"
-        footerArea={
-          <Button variant="primary" size="default">
-            作成
-          </Button>
-        }
       />
     </>
   );

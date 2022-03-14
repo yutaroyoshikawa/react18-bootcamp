@@ -1,14 +1,14 @@
 import type { FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { FC } from "react";
+import type { IconName } from "../../../lib/icon";
 import { css, theme } from "../../../lib/style";
-
-type IconName = "moon" | "sun" | "search";
 
 const icons: Record<IconName, FontAwesomeIconProps["icon"]> = {
   moon: ["fas", "moon"],
   sun: ["fas", "sun"],
   search: ["fas", "search"],
+  circleXMark: ["fas", "circle-xmark"],
 };
 
 type IconProps = {
