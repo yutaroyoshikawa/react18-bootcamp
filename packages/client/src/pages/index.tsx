@@ -1,8 +1,10 @@
 import type { FC } from "react";
+import { useState } from "react";
 import { dummyCommunity } from "../../testdata/community";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
+import { Modal } from "../features/app/components/Modal";
 import { useTheme } from "../features/app/modules/themeHooks";
 import { CommunitySummary } from "../features/community/components/CommunitySummary";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
@@ -22,60 +24,79 @@ export const Home: FC = () => {
 const community = dummyCommunity();
 
 const PageContent: FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [theme] = useTheme();
 
   return (
-    <div className={containerStyle()}>
-      <div className={titleContainer()}>
-        <Heading tag="h1" variant={theme}>
-          コミュニティ
-        </Heading>
-        <Button type="button" variant="primary" size="default">
-          新しいコミュニティを作る
-        </Button>
-      </div>
+    <>
+      <div className={containerStyle()}>
+        <div className={titleContainer()}>
+          <Heading tag="h1" variant={theme}>
+            コミュニティ
+          </Heading>
+          <Button
+            type="button"
+            onClick={() => setIsOpenModal(true)}
+            variant="primary"
+            size="default"
+          >
+            新しいコミュニティを作る
+          </Button>
+        </div>
 
-      <div className={searchWrapper()}>
-        <SearchCommunityForm
-          onClickSearch={(keyword) => console.log(keyword)}
+        <div className={searchWrapper()}>
+          <SearchCommunityForm
+            onClickSearch={(keyword) => console.log(keyword)}
+          />
+        </div>
+        <CommunitySummary
+          community={{
+            ...community,
+            thumbnailUrl: "https://picsum.photos/200/300",
+          }}
+          layout="vertical"
+        />
+        <CommunitySummary
+          community={{
+            ...community,
+            thumbnailUrl: "https://picsum.photos/200/300",
+          }}
+          layout="vertical"
+        />
+        <CommunitySummary
+          community={{
+            ...community,
+            thumbnailUrl: "https://picsum.photos/200/300",
+          }}
+          layout="vertical"
+        />
+        <CommunitySummary
+          community={{
+            ...community,
+            thumbnailUrl: "https://picsum.photos/200/300",
+          }}
+          layout="vertical"
+        />
+        <CommunitySummary
+          community={{
+            ...community,
+            thumbnailUrl: "https://picsum.photos/200/300",
+          }}
+          layout="vertical"
         />
       </div>
-      <CommunitySummary
-        community={{
-          ...community,
-          thumbnailUrl: "https://picsum.photos/200/300",
-        }}
-        layout="vertical"
+      <Modal
+        isOpen={isOpenModal}
+        onRequestClose={() => setIsOpenModal(false)}
+        title="新規コミュニティ"
+        contentLabel="新規コミュニティ"
+        footerArea={
+          <Button variant="primary" size="default">
+            作成
+          </Button>
+        }
       />
-      <CommunitySummary
-        community={{
-          ...community,
-          thumbnailUrl: "https://picsum.photos/200/300",
-        }}
-        layout="vertical"
-      />
-      <CommunitySummary
-        community={{
-          ...community,
-          thumbnailUrl: "https://picsum.photos/200/300",
-        }}
-        layout="vertical"
-      />
-      <CommunitySummary
-        community={{
-          ...community,
-          thumbnailUrl: "https://picsum.photos/200/300",
-        }}
-        layout="vertical"
-      />
-      <CommunitySummary
-        community={{
-          ...community,
-          thumbnailUrl: "https://picsum.photos/200/300",
-        }}
-        layout="vertical"
-      />
-    </div>
+    </>
   );
 };
 

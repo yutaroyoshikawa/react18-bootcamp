@@ -34,6 +34,7 @@ const h1Style = css({
   margin: 0,
   color: theme(({ colors }) => colors.title),
   fontSize: theme(({ fontSizes }) => fontSizes[4]),
+  fontFamily: theme(({ fonts }) => fonts.base),
   '&[data-variant="dark"]': {
     color: theme(({ colors }) => colors.titleDark),
   },
@@ -43,6 +44,7 @@ const h2Style = css({
   margin: 0,
   color: theme(({ colors }) => colors.title),
   fontSize: theme(({ fontSizes }) => fontSizes[2]),
+  fontFamily: theme(({ fonts }) => fonts.base),
   '&[data-variant="dark"]': {
     color: theme(({ colors }) => colors.titleDark),
   },
