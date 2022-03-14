@@ -54,6 +54,9 @@ const modalBaseStyle = css({
   width: "100%",
   maxWidth: "800px",
   height: "100%",
+  display: "grid",
+  gridTemplateRows: "auto minmax(0, 1fr)",
+  rowGap: theme(({ space }) => space[1]),
   position: "fixed",
   top: 0,
   right: 0,
@@ -62,7 +65,7 @@ const modalBaseStyle = css({
     ({ radii }) => radii.radius1
   )}`,
   boxShadow: theme(({ shadows }) => shadows.elevationMid),
-  padding: `${theme(({ space }) => space[5])} ${theme(
+  padding: `${theme(({ space }) => space[4])} ${theme(
     ({ space }) => space[4]
   )}`,
   boxSizing: "border-box",
@@ -112,7 +115,6 @@ const closeButtonStyle = css({
 });
 
 const titleWrapperStyle = css({
-  height: "54px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

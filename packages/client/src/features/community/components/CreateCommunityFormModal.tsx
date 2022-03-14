@@ -48,7 +48,7 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
       title="新規コミュニティ"
       contentLabel="新規コミュニティ作成フォーム"
     >
-      <form>
+      <form className={formStyle()}>
         <ModalBody>
           <div className={inputsWrapperStyle()}>
             <label className={labelStyle()}>
@@ -74,6 +74,12 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
     </Modal>
   );
 };
+
+const formStyle = css({
+  display: "grid",
+  gridTemplateRows: "minmax(0, 1fr) auto",
+  rowGap: theme(({ space }) => space[1]),
+});
 
 const inputsWrapperStyle = css({
   padding: `${theme(({ space }) => space[1])} ${theme(

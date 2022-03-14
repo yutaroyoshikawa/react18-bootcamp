@@ -10,6 +10,5 @@ export const ModalBody: VFC<ModalBodyProps> = ({ children }) => {
 };
 
 const bodyStyle = css({
-  height: "calc(100% - 114px)",
   overflowY: "auto",
 });
