@@ -49,41 +49,9 @@ const PageContent: FC = () => {
             onClickSearch={(keyword) => console.log(keyword)}
           />
         </div>
-        <CommunitySummary
-          community={{
-            ...community,
-            thumbnailUrl: "https://picsum.photos/200/300",
-          }}
-          layout="vertical"
-        />
-        <CommunitySummary
-          community={{
-            ...community,
-            thumbnailUrl: "https://picsum.photos/200/300",
-          }}
-          layout="vertical"
-        />
-        <CommunitySummary
-          community={{
-            ...community,
-            thumbnailUrl: "https://picsum.photos/200/300",
-          }}
-          layout="vertical"
-        />
-        <CommunitySummary
-          community={{
-            ...community,
-            thumbnailUrl: "https://picsum.photos/200/300",
-          }}
-          layout="vertical"
-        />
-        <CommunitySummary
-          community={{
-            ...community,
-            thumbnailUrl: "https://picsum.photos/200/300",
-          }}
-          layout="vertical"
-        />
+        {Array.from({ length: 5 }).map((_, idx) => (
+          <CommunitySummary key={idx} community={community} layout="vertical" />
+        ))}
       </div>
       <CreateCommunityFormModal
         isOpen={isOpenModal}

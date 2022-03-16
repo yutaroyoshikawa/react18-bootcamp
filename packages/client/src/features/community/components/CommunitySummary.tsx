@@ -7,7 +7,7 @@ import { Image } from "../../app/components/Image";
 import { categoryNames } from "../modules/communityUtils";
 
 type CommunitySummaryProps = {
-  community: Community & { thumbnailUrl: string };
+  community: Community;
   layout: "vertical" | "horizontal";
 };
 
@@ -16,7 +16,7 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({ community }) => {
     <article className={containerStyle()}>
       <figure className={sumbnailWrapperStyle()}>
         <Image
-          src={community.thumbnailUrl}
+          src={community.imageUrl}
           alt={community.name}
           width={130}
           height={240}
