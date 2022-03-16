@@ -1,4 +1,4 @@
-import { ApiError, DefaultService } from "api-server";
+import { ApiError, TestService } from "api-server";
 import useSWR from "swr";
 import { apiClient, handleApiError } from "../../../lib/api";
 import { PromiseType } from "../../../type";
@@ -24,15 +24,13 @@ export const useTest = ({ name }: GetKeyRequest) => {
 
 const getKey = ({ name }: { name: string }) => {
   return {
-    key: `${DefaultService.name}/${DefaultService.prototype.getTest.name}`,
+    key: `${TestService.name}/${TestService.prototype.getTest.name}`,
     name,
   };
 };
 
 const fetcher = async ({ name }: ReturnType<typeof getKey>) => {
-  const result = await apiClient.default
-    .getTest({ name })
-    .catch(handleApiError);
+  const result = await apiClient.test.getTest({ name }).catch(handleApiError);
 
   if (result instanceof Error) {
     throw result;

@@ -10,9 +10,6 @@ export default meta;
 
 export const Base: ComponentStoryObj<typeof CommunitySummary> = {
   args: {
-    community: {
-      ...dummyCommunity(),
-      thumbnailUrl: "https://picsum.photos/200/300",
-    },
+    community: dummyCommunity(),
   },
 };
