@@ -1,8 +1,20 @@
 # React 18 Bootcamp
-
 ## Getting started
 
-下記コマンドの実行には、 api-server パッケージのセットアップを完了してください。
+このリポジトリでは Git Submodules を利用しています。
+Git Submodules を含めた clone には下記のコマンドを実行してください。
+
+```sh
+git clone --recursive https://github.com/yutaroyoshikawa/react18-bootcamp.git
+```
+
+gh コマンドを利用している場合や、 `--recursive` オプションをつけずに clone した場合は、下記のコマンドを実行することで Git Submodules を clone することができます。
+
+```sh
+git submodule update --init --recursive
+```
+
+下記コマンドの実行の前に、 api-server パッケージのセットアップを完了してください。
 
 ```sh
 npm install
@@ -10,6 +22,7 @@ npm run build:api-client
 npm run dev:client
 ```
 
+クライアント用の開発用 Web サーバーが立ち上がると http://localhost:8080 にアクセスすることで動作を確認することができます。
 ## プロジェクト構成
 
 npm workspace を利用して API サーバーと web クライアントの２パッケージに分けてプロジェクトを管理しています。
@@ -22,7 +35,7 @@ Web API として api-server パッケージに依存しているので、アプ
 アプリケーションの利用には、依存パッケージのセットアップの後に下記の通り従ってください。
 
 ```sh
-cd packages/api-client
+cd packages/client
 npm install
 npm run dev
 ```
