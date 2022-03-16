@@ -1,4 +1,4 @@
-import type { community } from "api-server";
+import type { Community } from "api-server";
 import type { FC } from "react";
 import { css, theme } from "../../../lib/style";
 import { Button } from "../../app/components/Button";
@@ -10,7 +10,7 @@ import { Textarea } from "../../app/components/Textarea";
 import { TextInput } from "../../app/components/TextInput";
 import { categoryNames } from "../modules/communityUtils";
 
-const categoryOptions: { label: string; value: community["category"] | "" }[] =
+const categoryOptions: { label: string; value: Community["category"] | "" }[] =
   [
     {
       label: "カテゴリを選択",

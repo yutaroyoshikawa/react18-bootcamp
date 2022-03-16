@@ -1,6 +1,6 @@
-import type { community } from "api-server";
+import type { Community } from "api-server";
 
-export const categoryNames: Record<community["category"], string> = {
+export const categoryNames: Record<Community["category"], string> = {
   anime: "アニメ",
   geek: "ギーク",
   gurmand: "グルメ",
