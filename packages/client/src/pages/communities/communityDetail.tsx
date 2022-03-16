@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useState } from "react";
 import { dummyCommunity } from "../../../testdata/community";
 import { dummyCommunityEvent } from "../../../testdata/communityEvent";
 import { BaseLayout } from "../../features/app/components/BaseLayout";
@@ -7,6 +8,7 @@ import { Heading } from "../../features/app/components/Heading";
 import { Image } from "../../features/app/components/Image";
 import { CommunityDetails } from "../../features/community/components/CommunityDetails";
 import { CommunityEventSummary } from "../../features/communityEvent/components/CommunityEventSummary";
+import { CreateCommunityEventFormModal } from "../../features/communityEvent/components/CreateCommunityEventFormModal";
 import { css, theme } from "../../lib/style";
 
 export const CommunityDetailPage: FC = () => {
@@ -21,27 +23,39 @@ const community = dummyCommunity();
 const communityEvent = dummyCommunityEvent();
 
 const CommunityDetailPageContent: FC = () => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   return (
-    <div className={containerStyle()}>
-      <section className={detailsHeaderStyle()}>
-        <Heading tag="h1" variant="light">
-          {community.name}
-        </Heading>
-        <Button variant="primary" size="default">
-          新しいイベントを作る
-        </Button>
-      </section>
-      <figure className={sumbnailWrapperStyle()}>
-        <Image src={community.imageUrl} alt="" width={696} height={230} />
-      </figure>
-      <section>
-        <CommunityDetails community={community} />
-      </section>
-      <section>
-        <Heading tag="h2" variant="light"></Heading>
-        <CommunityEventSummary communityEvent={communityEvent} />
-      </section>
-    </div>
+    <>
+      <div className={containerStyle()}>
+        <section className={detailsHeaderStyle()}>
+          <Heading tag="h1" variant="light">
+            {community.name}
+          </Heading>
+          <Button
+            variant="primary"
+            size="default"
+            onClick={() => setIsOpenModal(true)}
+          >
+            新しいイベントを作る
+          </Button>
+        </section>
+        <figure className={sumbnailWrapperStyle()}>
+          <Image src={community.imageUrl} alt="" width={696} height={230} />
+        </figure>
+        <section>
+          <CommunityDetails community={community} />
+        </section>
+        <section>
+          <Heading tag="h2" variant="light"></Heading>
+          <CommunityEventSummary communityEvent={communityEvent} />
+        </section>
+      </div>
+      <CreateCommunityEventFormModal
+        isOpen={isOpenModal}
+        onRequestClose={() => setIsOpenModal(false)}
+      />
+    </>
   );
 };
 
