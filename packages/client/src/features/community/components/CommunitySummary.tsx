@@ -1,4 +1,4 @@
-import type { community } from "api-server";
+import type { Community } from "api-server";
 import type { FC } from "react";
 import { css, theme } from "../../../lib/style";
 import { Button } from "../../app/components/Button";
@@ -7,7 +7,7 @@ import { Image } from "../../app/components/Image";
 import { categoryNames } from "../modules/communityUtils";
 
 type CommunitySummaryProps = {
-  community: community & { thumbnailUrl: string };
+  community: Community & { thumbnailUrl: string };
   layout: "vertical" | "horizontal";
 };
 
