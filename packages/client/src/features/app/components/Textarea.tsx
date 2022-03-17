@@ -1,7 +1,7 @@
-import type { FC, TextareaHTMLAttributes } from "react";
+import type { FC, LegacyRef, TextareaHTMLAttributes } from "react";
 import { css, theme } from "../../../lib/style";
 
-type TextareaProps = Omit<
+type TextareaProps = { ref?: LegacyRef<HTMLTextAreaElement> } & Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
   "className"
 >;
