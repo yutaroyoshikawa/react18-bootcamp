@@ -1,23 +1,32 @@
 import { Community } from "api-server";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import type { FC } from "react";
+import { useMemo } from "react";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
 import { categoryNames } from "../modules/communityUtils";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type CommunityDetailsProps = {
   community: Community;
 };
 
 export const CommunityDetails: FC<CommunityDetailsProps> = ({ community }) => {
+  const createdAt = useMemo(() => {
+    return dayjs(community.createdAt).tz("Asia/Tokyo").format("YYYY/MM/DD");
+  }, [community.createdAt]);
+
   return (
     <article className={containerStyle()}>
       <div className={metaInfoContainerStyle()}>
         <span className={categoryStyle()}>
           {categoryNames[community.category]}
         </span>
-        <time className={createdAtStyle()}>
-          作成日: {new Date(community.createdAt).toString()}
-        </time>
+        <time className={createdAtStyle()}>作成日: {createdAt}</time>
       </div>
       <p className={detailsTextStyle()}>{community.details}</p>
       <div>

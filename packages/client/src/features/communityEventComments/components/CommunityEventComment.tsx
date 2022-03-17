@@ -1,6 +1,13 @@
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import type { FC } from "react";
+import { useMemo } from "react";
 import { css, theme } from "../../../lib/style";
 import { UserAvatar } from "../../user/components/UserAvatar";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 type CommunityEventCommnetProps = {
   communityEventComment: {
@@ -16,6 +23,12 @@ type CommunityEventCommnetProps = {
 export const CommunityEventComment: FC<CommunityEventCommnetProps> = ({
   communityEventComment,
 }) => {
+  const postedAt = useMemo(() => {
+    return dayjs(communityEventComment.postedAt)
+      .tz("Asia/Tokyo")
+      .format("YYYY/MM/DD HH:mm");
+  }, [communityEventComment.postedAt]);
+
   return (
     <figure className={containerStyle()}>
       <UserAvatar
@@ -27,9 +40,7 @@ export const CommunityEventComment: FC<CommunityEventCommnetProps> = ({
         <cite className={userNameTextStyle()}>
           {communityEventComment.user.name}
         </cite>
-        <time className={postedAtTextStyle()}>
-          {new Date(communityEventComment.postedAt).toString()}
-        </time>
+        <time className={postedAtTextStyle()}>{postedAt}</time>
       </div>
     </figure>
   );

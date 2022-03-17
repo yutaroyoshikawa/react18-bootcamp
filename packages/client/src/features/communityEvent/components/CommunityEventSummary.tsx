@@ -1,5 +1,8 @@
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import type { FC } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { dummuCommunityEventComment } from "../../../../testdata/communityEventComment";
 import { css, theme } from "../../../lib/style";
@@ -7,6 +10,9 @@ import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
 import { CommunityEventComment } from "../../communityEventComments/components/CommunityEventComment";
 import { CommunityEventCommentForm } from "../../communityEventComments/components/CommunityEventCommentForm";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const TRANSITION_TIMEOUT = 300;
 
@@ -24,6 +30,11 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
 }) => {
   const [isOpenToggle, setIsOpenToggle] = useState(false);
   const [showAccordionContents, setShowAccordionContents] = useState(false);
+  const holdAt = useMemo(() => {
+    return dayjs(communityEvent.holdAt)
+      .tz("Asia/Tokyo")
+      .format("YYYY/MM/DD HH:mm");
+  }, [communityEvent.holdAt]);
 
   return (
     <article className={containerStyle()}>
@@ -35,20 +46,18 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
           <Heading tag="h2" variant="light">
             {communityEvent.name}
           </Heading>
-          <time className={holdAtTextStyle()}>
-            開催日: {new Date(communityEvent.holdAt).toString()}
-          </time>
+          <time className={holdAtTextStyle()}>開催日: {holdAt}</time>
         </div>
         <p className={detailsTextStyle()}>{communityEvent.details}</p>
         <details
           className={commentsToggleStyle()}
-          onClick={(event) => {
-            event.preventDefault();
-            setShowAccordionContents((prev) => !prev);
-          }}
+          onClick={(event) => event.preventDefault()}
           open={isOpenToggle}
         >
-          <summary className={commentsToggleSummaryStyle()}>
+          <summary
+            className={commentsToggleSummaryStyle()}
+            onClick={() => setShowAccordionContents((prev) => !prev)}
+          >
             コメントを見る
           </summary>
           <CSSTransition
@@ -112,13 +121,14 @@ const holdAtTextStyle = css({
 
 const detailsContentsWrapperStyle = css({
   opacity: 0,
+  display: "grid",
+  rowGap: theme(({ space }) => space[2]),
+  transition: `opacity ${TRANSITION_TIMEOUT}ms ease`,
   ["&.enter-active, &.enter-done"]: {
     opacity: 1,
-    transition: `opacity ${TRANSITION_TIMEOUT}ms ease`,
   },
   ["&.exit"]: {
     opacity: 0,
-    transition: `opacity ${TRANSITION_TIMEOUT}ms ease`,
   },
 });
 
@@ -137,6 +147,7 @@ const commentsToggleStyle = css({
 const commentsToggleSummaryStyle = css({
   textAlign: "center",
   cursor: "pointer",
+  padding: `${theme(({ space }) => space[2])} 0`,
 });
 
 const listStyle = css({
