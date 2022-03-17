@@ -23,7 +23,7 @@ export const CommunityEventCommentForm: FC<CommunityEventCommentFormProps> = ({
 
   return (
     <form onSubmit={onSubmitHandle} className={formStyle()}>
-      <Textarea ref={textAreaRef} rows={1} />
+      <Textarea ref={textAreaRef} rows={1} placeholder="コメントを追加" />
       <SquareButton type="submit" size="default" disabled={false}>
         送信
       </SquareButton>

@@ -1,7 +1,14 @@
 import type { FC } from "react";
+import { useState } from "react";
+import { CSSTransition } from "react-transition-group";
+import { dummuCommunityEventComment } from "../../../../testdata/communityEventComment";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
+import { CommunityEventComment } from "../../communityEventComments/components/CommunityEventComment";
+import { CommunityEventCommentForm } from "../../communityEventComments/components/CommunityEventCommentForm";
+
+const TRANSITION_TIMEOUT = 300;
 
 type CommunityEventSummaryProps = {
   communityEvent: {
@@ -15,6 +22,9 @@ type CommunityEventSummaryProps = {
 export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
   communityEvent,
 }) => {
+  const [isOpenToggle, setIsOpenToggle] = useState(false);
+  const [showAccordionContents, setShowAccordionContents] = useState(false);
+
   return (
     <article className={containerStyle()}>
       <figure className={sumbnailWrapperStyle()}>
@@ -30,11 +40,38 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
           </time>
         </div>
         <p className={detailsTextStyle()}>{communityEvent.details}</p>
-        <details className={commentsToggleStyle()}>
+        <details
+          className={commentsToggleStyle()}
+          onClick={(event) => {
+            event.preventDefault();
+            setShowAccordionContents((prev) => !prev);
+          }}
+          open={isOpenToggle}
+        >
           <summary className={commentsToggleSummaryStyle()}>
             コメントを見る
           </summary>
-          <p>コメント</p>
+          <CSSTransition
+            in={showAccordionContents}
+            timeout={TRANSITION_TIMEOUT}
+            onEnter={() => setIsOpenToggle(true)}
+            onExited={() => setIsOpenToggle(false)}
+          >
+            <div className={detailsContentsWrapperStyle()}>
+              <CommunityEventCommentForm
+                onSubmit={(comment) => console.log(comment)}
+              />
+              {isOpenToggle && (
+                <ul className={listStyle()}>
+                  <li className={listItemStyle()}>
+                    <CommunityEventComment
+                      communityEventComment={dummuCommunityEventComment()}
+                    />
+                  </li>
+                </ul>
+              )}
+            </div>
+          </CSSTransition>
         </details>
       </div>
     </article>
@@ -73,6 +110,18 @@ const holdAtTextStyle = css({
   margin: 0,
 });
 
+const detailsContentsWrapperStyle = css({
+  opacity: 0,
+  ["&.enter-active, &.enter-done"]: {
+    opacity: 1,
+    transition: `opacity ${TRANSITION_TIMEOUT}ms ease`,
+  },
+  ["&.exit"]: {
+    opacity: 0,
+    transition: `opacity ${TRANSITION_TIMEOUT}ms ease`,
+  },
+});
+
 const detailsTextStyle = css({
   color: theme(({ colors }) => colors.text),
   fontSize: theme(({ fontSizes }) => fontSizes[1]),
@@ -88,4 +137,14 @@ const commentsToggleStyle = css({
 const commentsToggleSummaryStyle = css({
   textAlign: "center",
   cursor: "pointer",
+});
+
+const listStyle = css({
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
+});
+
+const listItemStyle = css({
+  margin: 0,
 });
