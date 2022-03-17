@@ -5,6 +5,6 @@ export const dummyUser = (): User => {
   return {
     id: uuid(),
     name: "テストユーザー",
-    iconUrl: "",
+    iconUrl: "https://picsum.photos/100/100",
   };
 };
