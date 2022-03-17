@@ -47,7 +47,9 @@ const CommunityDetailPageContent: FC = () => {
           <CommunityDetails community={community} />
         </section>
         <section>
-          <Heading tag="h2" variant="light"></Heading>
+          <Heading tag="h2" variant="light">
+            開催イベント一覧
+          </Heading>
           <CommunityEventSummary communityEvent={communityEvent} />
         </section>
       </div>

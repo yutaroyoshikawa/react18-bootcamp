@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { css, theme } from "../../../lib/style";
 import { Button } from "../../app/components/Button";
+import { DateTimePicker } from "../../app/components/DateTimePicker";
 import type { ModalProps } from "../../app/components/Modal";
 import { Modal } from "../../app/components/Modal";
 import { ModalBody } from "../../app/components/ModalBody";
@@ -36,6 +37,10 @@ export const CreateCommunityEventFormModal: FC<
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>イベント名</span>
               <TextInput placeholder="新規イベント名" />
+            </label>
+            <label className={labelStyle()}>
+              <span className={labelTextStyle()}>開催日時</span>
+              <DateTimePicker min={new Date().toString()} />
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>詳細</span>
