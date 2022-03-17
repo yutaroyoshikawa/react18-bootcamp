@@ -1,3 +1,4 @@
+import { MemoryRouter } from "react-router-dom";
 import { enableIcon } from "../src/lib/icon";
 import { globalStyles } from "../src/lib/style";
 
@@ -13,3 +14,11 @@ export const parameters = {
     },
   },
 };
+
+export const decorators = [
+  (Story) => (
+    <MemoryRouter>
+      <Story />
+    </MemoryRouter>
+  ),
+];
