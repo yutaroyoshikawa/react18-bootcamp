@@ -50,7 +50,7 @@ const PageContent: FC = () => {
           />
         </div>
         {Array.from({ length: 5 }).map((_, idx) => (
-          <CommunitySummary key={idx} community={community} layout="vertical" />
+          <CommunitySummary key={idx} community={community} isJoined={true} layout="vertical" />
         ))}
       </div>
       <CreateCommunityFormModal

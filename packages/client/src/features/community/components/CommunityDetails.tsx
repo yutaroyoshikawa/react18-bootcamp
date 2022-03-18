@@ -1,15 +1,10 @@
 import { Community } from "api-server";
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
 import type { FC } from "react";
 import { useMemo } from "react";
+import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
 import { categoryNames } from "../modules/communityUtils";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 type CommunityDetailsProps = {
   community: Community;
@@ -17,7 +12,7 @@ type CommunityDetailsProps = {
 
 export const CommunityDetails: FC<CommunityDetailsProps> = ({ community }) => {
   const createdAt = useMemo(() => {
-    return dayjs(community.createdAt).tz("Asia/Tokyo").format("YYYY/MM/DD");
+    return formatDate({ date: community.createdAt, format: "YYYY/MM/DD" });
   }, [community.createdAt]);
 
   return (

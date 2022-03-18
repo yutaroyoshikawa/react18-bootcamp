@@ -4,14 +4,19 @@ import { css, theme } from "../../../lib/style";
 import { Button } from "../../app/components/Button";
 import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
+import { Link } from "../../app/components/Link";
 import { categoryNames } from "../modules/communityUtils";
 
 type CommunitySummaryProps = {
   community: Community;
+  isJoined: boolean;
   layout: "vertical" | "horizontal";
 };
 
-export const CommunitySummary: FC<CommunitySummaryProps> = ({ community }) => {
+export const CommunitySummary: FC<CommunitySummaryProps> = ({
+  community,
+  isJoined,
+}) => {
   return (
     <article className={containerStyle()}>
       <figure className={sumbnailWrapperStyle()}>
@@ -33,9 +38,13 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({ community }) => {
           <p className={paragraphStyle()}>{community.details}</p>
         </div>
         <div className={funcStyle()}>
-          <Button variant="primary" size="default">
-            参加する
-          </Button>
+          {isJoined ? (
+            <Link to={`/communities/${community.id}`}>詳細を見る</Link>
+          ) : (
+            <Button variant="primary" size="default">
+              参加する
+            </Button>
+          )}
         </div>
       </div>
     </article>

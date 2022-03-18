@@ -1,5 +1,5 @@
 import type { FC, FormEvent } from "react";
-import { useCallback, useRef } from "react";
+import { useCallback, useState } from "react";
 import { css, theme } from "../../../lib/style";
 import { SquareButton } from "../../app/components/SquareButton";
 import { Textarea } from "../../app/components/Textarea";
@@ -11,19 +11,23 @@ type CommunityEventCommentFormProps = {
 export const CommunityEventCommentForm: FC<CommunityEventCommentFormProps> = ({
   onSubmit,
 }) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [comment, setComment] = useState("");
 
   const onSubmitHandle = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      onSubmit(textAreaRef.current?.value ?? "");
+      onSubmit(comment);
     },
-    [onSubmit]
+    [comment, onSubmit]
   );
 
   return (
     <form onSubmit={onSubmitHandle} className={formStyle()}>
-      <Textarea ref={textAreaRef} rows={1} placeholder="コメントを追加" />
+      <Textarea
+        onBlur={(event) => setComment(event.target.value)}
+        rows={1}
+        placeholder="コメントを追加"
+      />
       <SquareButton type="submit" size="default" disabled={false}>
         送信
       </SquareButton>

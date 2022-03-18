@@ -1,18 +1,13 @@
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
 import type { FC } from "react";
 import { useMemo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { dummuCommunityEventComment } from "../../../../testdata/communityEventComment";
+import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
 import { CommunityEventComment } from "../../communityEventComments/components/CommunityEventComment";
 import { CommunityEventCommentForm } from "../../communityEventComments/components/CommunityEventCommentForm";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 const TRANSITION_TIMEOUT = 300;
 
@@ -31,9 +26,10 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
   const [isOpenToggle, setIsOpenToggle] = useState(false);
   const [showAccordionContents, setShowAccordionContents] = useState(false);
   const holdAt = useMemo(() => {
-    return dayjs(communityEvent.holdAt)
-      .tz("Asia/Tokyo")
-      .format("YYYY/MM/DD HH:mm");
+    return formatDate({
+      date: communityEvent.holdAt,
+      format: "YYYY/MM/DD HH:mm",
+    });
   }, [communityEvent.holdAt]);
 
   return (

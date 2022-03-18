@@ -11,5 +11,6 @@ export default meta;
 export const Base: ComponentStoryObj<typeof CommunitySummary> = {
   args: {
     community: dummyCommunity(),
+    isJoined: false,
   },
 };

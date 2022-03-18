@@ -1,13 +1,8 @@
-import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
-import utc from "dayjs/plugin/utc";
 import type { FC } from "react";
 import { useMemo } from "react";
+import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
 import { UserAvatar } from "../../user/components/UserAvatar";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 type CommunityEventCommnetProps = {
   communityEventComment: {
@@ -24,9 +19,10 @@ export const CommunityEventComment: FC<CommunityEventCommnetProps> = ({
   communityEventComment,
 }) => {
   const postedAt = useMemo(() => {
-    return dayjs(communityEventComment.postedAt)
-      .tz("Asia/Tokyo")
-      .format("YYYY/MM/DD HH:mm");
+    return formatDate({
+      date: communityEventComment.postedAt,
+      format: "YYYY/MM/DD HH:mm",
+    });
   }, [communityEventComment.postedAt]);
 
   return (
