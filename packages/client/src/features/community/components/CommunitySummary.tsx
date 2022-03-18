@@ -1,25 +1,66 @@
 import type { Community } from "api-server";
 import type { FC } from "react";
-import { css, theme } from "../../../lib/style";
+import {
+  breakpointAttributes,
+  breakpointsStyle,
+  css,
+  theme,
+} from "../../../lib/style";
 import { Button } from "../../app/components/Button";
 import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
 import { Link } from "../../app/components/Link";
 import { categoryNames } from "../modules/communityUtils";
 
+type Layout = "vertical" | "horizontal";
+
 type CommunitySummaryProps = {
   community: Community;
   isJoined: boolean;
-  layout: "vertical" | "horizontal";
+  breakpoint: {
+    layout: {
+      lg: Layout;
+      md: Layout;
+      sm: Layout;
+    };
+  };
 };
+
+const variants = {
+  button: {
+    horizontal: "default",
+    vertical: "small",
+  },
+} as const;
 
 export const CommunitySummary: FC<CommunitySummaryProps> = ({
   community,
   isJoined,
+  breakpoint,
 }) => {
   return (
-    <article className={containerStyle()}>
-      <figure className={sumbnailWrapperStyle()}>
+    <article
+      className={containerStyle({
+        css: {
+          ...breakpointsStyle({
+            key: "layout",
+            style: {
+              vertical: {},
+              horizontal: {},
+            },
+          }),
+        },
+      })}
+      {...breakpointAttributes({
+        key: "layout",
+        breakpoints: breakpoint.layout,
+      })}
+    >
+      <figure
+        className={sumbnailWrapperStyle({
+          css: {},
+        })}
+      >
         <Image
           src={community.imageUrl}
           alt={community.name}
@@ -41,7 +82,16 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
           {isJoined ? (
             <Link to={`/communities/${community.id}`}>詳細を見る</Link>
           ) : (
-            <Button variant="primary" size="default">
+            <Button
+              variant="primary"
+              breakpoint={{
+                size: {
+                  lg: variants.button[breakpoint.layout.lg],
+                  md: variants.button[breakpoint.layout.md],
+                  sm: variants.button[breakpoint.layout.sm],
+                },
+              }}
+            >
               参加する
             </Button>
           )}

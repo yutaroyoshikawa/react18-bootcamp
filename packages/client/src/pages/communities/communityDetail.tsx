@@ -34,7 +34,13 @@ const CommunityDetailPageContent: FC = () => {
           </Heading>
           <Button
             variant="primary"
-            size="default"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
             onClick={() => setIsOpenModal(true)}
           >
             新しいイベントを作る

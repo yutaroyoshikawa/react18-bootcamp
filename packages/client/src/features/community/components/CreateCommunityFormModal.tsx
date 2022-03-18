@@ -66,7 +66,17 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button type="submit" variant="primary" size="default">
+          <Button
+            type="submit"
+            variant="primary"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
             作成
           </Button>
         </ModalFooter>

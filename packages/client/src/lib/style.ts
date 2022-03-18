@@ -1,4 +1,54 @@
 import { createStitches } from "@stitches/core";
+import type { CSSProperties } from "react";
+
+export const breakpointAttributes = <T extends string>({
+  key,
+  breakpoints,
+}: {
+  key: string;
+  breakpoints: { lg: T; md: T; sm: T };
+}) => {
+  return {
+    [`data-${key}-lg`]: breakpoints.lg,
+    [`data-${key}-md`]: breakpoints.md,
+    [`data-${key}-sm`]: breakpoints.sm,
+  };
+};
+
+export const breakpointsStyle = ({
+  style,
+  key,
+}: {
+  style: { [key: string]: CSSProperties };
+  key: string;
+}): Record<string, CSSProperties> => {
+  return {
+    "@media screen and (max-width:599px)": {
+      ...Object.fromEntries(
+        Object.keys(style).map((value) => [
+          `&[data-${key}-sm="${value}"]`,
+          style[value],
+        ])
+      ),
+    },
+    "@media screen and (min-width:600px)": {
+      ...Object.fromEntries(
+        Object.keys(style).map((value) => [
+          `&[data-${key}-md="${value}"]`,
+          style[value],
+        ])
+      ),
+    },
+    "@media screen and (min-width:1025px)": {
+      ...Object.fromEntries(
+        Object.keys(style).map((value) => [
+          `&[data-${key}-lg="${value}"]`,
+          style[value],
+        ])
+      ),
+    },
+  };
+};
 
 type Theme = {
   colors: {
@@ -8,9 +58,9 @@ type Theme = {
 
 const themeKey = {
   media: {
-    bpSm: "bp-sm",
-    bpMd: "bp-md",
-    bpLg: "bp-lg",
+    sm: "sm",
+    md: "md",
+    lg: "lg",
   },
   colors: {
     accent: "accent",
@@ -72,9 +122,9 @@ const {
 } = createStitches({
   theme: {
     media: {
-      [themeKey.media.bpSm]: "(max-width:599px)",
-      [themeKey.media.bpMd]: "(min-width:600px)",
-      [themeKey.media.bpLg]: "(min-width:1025px)",
+      [themeKey.media.sm]: "(max-width:599px)",
+      [themeKey.media.md]: "(min-width:600px)",
+      [themeKey.media.lg]: "(min-width:1025px)",
     },
     colors: {
       [themeKey.colors.background]: "linear-gradient(90deg, #FFF7F0, #FFF5FF)",

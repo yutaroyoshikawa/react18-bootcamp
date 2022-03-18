@@ -38,7 +38,13 @@ const PageContent: FC = () => {
             type="button"
             onClick={() => setIsOpenModal(true)}
             variant="primary"
-            size="default"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
           >
             新しいコミュニティを作る
           </Button>
@@ -50,7 +56,18 @@ const PageContent: FC = () => {
           />
         </div>
         {Array.from({ length: 5 }).map((_, idx) => (
-          <CommunitySummary key={idx} community={community} isJoined={true} layout="vertical" />
+          <CommunitySummary
+            key={idx}
+            community={community}
+            isJoined={true}
+            breakpoint={{
+              layout: {
+                lg: "horizontal",
+                md: "horizontal",
+                sm: "vertical",
+              },
+            }}
+          />
         ))}
       </div>
       <CreateCommunityFormModal

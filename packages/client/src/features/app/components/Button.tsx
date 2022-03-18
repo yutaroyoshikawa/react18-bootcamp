@@ -1,14 +1,29 @@
-import type { ButtonHTMLAttributes, VFC } from "react";
-import { css, theme } from "../../../lib/style";
+import type { ButtonHTMLAttributes, CSSProperties, VFC } from "react";
+import {
+  breakpointAttributes,
+  breakpointsStyle,
+  css,
+  theme,
+} from "../../../lib/style";
+
+type Size = "default" | "small";
+
+const breakpointKey = "size";
 
 export type ButtonProps = {
   variant: "primary" | "secondary";
-  size: "default" | "small";
+  breakpoint: {
+    [breakpointKey]: {
+      lg: Size;
+      md: Size;
+      sm: Size;
+    };
+  };
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: VFC<ButtonProps> = ({
   variant,
-  size,
+  breakpoint,
   children,
   ...buttonProps
 }) => {
@@ -16,12 +31,20 @@ export const Button: VFC<ButtonProps> = ({
     <button
       {...buttonProps}
       data-variant={variant}
-      data-size={size}
       className={buttonStyle()}
+      {...breakpointAttributes({
+        key: breakpointKey,
+        breakpoints: breakpoint[breakpointKey],
+      })}
     >
       {children}
     </button>
   );
+};
+
+const smallSizeStyle: CSSProperties = {
+  width: "176px",
+  height: "40px",
 };
 
 const buttonStyle = css({
@@ -46,9 +69,10 @@ const buttonStyle = css({
     cursor: "not-allowed",
     filter: "contrast(50%)",
   },
-  '&[data-size="small"]': {
-    width: "170px",
-    height: "40px",
-  },
-  '&[data-variant="secondary"': {},
+  ...breakpointsStyle({
+    key: breakpointKey,
+    style: {
+      small: smallSizeStyle,
+    },
+  }),
 });
