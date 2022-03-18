@@ -14,7 +14,15 @@ export const Home: FC = () => {
   return (
     <>
       {/* <Helmet title="トップページ" /> */}
-      <BaseLayout>
+      <BaseLayout
+        breakpoints={{
+          layout: {
+            lg: "horizontal",
+            md: "horizontal",
+            sm: "vertical",
+          },
+        }}
+      >
         <PageContent />
       </BaseLayout>
     </>

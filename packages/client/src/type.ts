@@ -3,3 +3,9 @@ export type PromiseType<T extends PromiseLike<unknown>> = T extends PromiseLike<
 >
   ? P
   : never;
+
+export type BreakPoint<T extends string> = {
+  lg: T;
+  md: T;
+  sm: T;
+};

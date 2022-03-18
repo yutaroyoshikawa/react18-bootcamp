@@ -13,7 +13,15 @@ import { css, theme } from "../../lib/style";
 
 export const CommunityDetailPage: FC = () => {
   return (
-    <BaseLayout>
+    <BaseLayout
+      breakpoints={{
+        layout: {
+          lg: "horizontal",
+          md: "horizontal",
+          sm: "vertical",
+        },
+      }}
+    >
       <CommunityDetailPageContent />
     </BaseLayout>
   );

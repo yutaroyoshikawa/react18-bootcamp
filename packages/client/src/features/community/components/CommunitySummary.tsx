@@ -1,28 +1,25 @@
 import type { Community } from "api-server";
-import type { FC } from "react";
+import type { CSSProperties, FC } from "react";
 import {
   breakpointAttributes,
   breakpointsStyle,
   css,
   theme,
 } from "../../../lib/style";
+import type { BreakPoint } from "../../../type";
 import { Button } from "../../app/components/Button";
 import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
 import { Link } from "../../app/components/Link";
 import { categoryNames } from "../modules/communityUtils";
 
-type Layout = "vertical" | "horizontal";
+const BREAKPOINT_KEY = "layout";
 
 type CommunitySummaryProps = {
   community: Community;
   isJoined: boolean;
   breakpoint: {
-    layout: {
-      lg: Layout;
-      md: Layout;
-      sm: Layout;
-    };
+    [BREAKPOINT_KEY]: BreakPoint<"vertical" | "horizontal">;
   };
 };
 
@@ -40,27 +37,13 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
 }) => {
   return (
     <article
-      className={containerStyle({
-        css: {
-          ...breakpointsStyle({
-            key: "layout",
-            style: {
-              vertical: {},
-              horizontal: {},
-            },
-          }),
-        },
-      })}
+      className={containerStyle()}
       {...breakpointAttributes({
-        key: "layout",
+        key: BREAKPOINT_KEY,
         breakpoints: breakpoint.layout,
       })}
     >
-      <figure
-        className={sumbnailWrapperStyle({
-          css: {},
-        })}
-      >
+      <figure className={sumbnailWrapperStyle()}>
         <Image
           src={community.imageUrl}
           alt={community.name}
@@ -105,6 +88,10 @@ const sumbnailWrapperStyle = css({
   margin: 0,
 });
 
+const verticalContainerStyle: CSSProperties = {
+  display: "block",
+};
+
 const containerStyle = css({
   width: "100%",
   minWidth: "500px",
@@ -115,6 +102,12 @@ const containerStyle = css({
   boxSizing: "border-box",
   display: "flex",
   overflow: "hidden",
+  ...breakpointsStyle({
+    key: BREAKPOINT_KEY,
+    style: {
+      vertical: verticalContainerStyle,
+    },
+  }),
 });
 
 const detailsStyle = css({

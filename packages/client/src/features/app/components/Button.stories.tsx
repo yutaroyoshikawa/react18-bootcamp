@@ -18,7 +18,13 @@ export const Base: ComponentStoryObj<typeof Button> = {
   args: {
     type: "button",
     variant: "primary",
-    size: "default",
+    breakpoint: {
+      size: {
+        lg: "default",
+        md: "default",
+        sm: "small",
+      },
+    },
     disabled: false,
   },
 };

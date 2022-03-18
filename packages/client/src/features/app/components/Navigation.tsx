@@ -1,18 +1,36 @@
-import type { FC } from "react";
-import { css, theme } from "../../../lib/style";
+import type { CSSProperties, FC } from "react";
+import {
+  breakpointAttributes,
+  breakpointsStyle,
+  css,
+  theme,
+} from "../../../lib/style";
+import type { BreakPoint } from "../../../type";
 import { useTheme } from "../modules/themeHooks";
 import { Heading } from "./Heading";
 import { Icon } from "./Icon";
 
+const BREAKPOINT_KEY = "layouts";
+
 type NavigationProps = {
   variant: "light" | "dark";
+  breakpoints: {
+    [BREAKPOINT_KEY]: BreakPoint<"vertical" | "horizontal">;
+  };
 };
 
-export const Navigation: FC<NavigationProps> = ({ variant }) => {
+export const Navigation: FC<NavigationProps> = ({ variant, breakpoints }) => {
   const [, setTheme] = useTheme();
 
   return (
-    <nav className={containerStyle()} data-variant={variant}>
+    <nav
+      className={containerStyle()}
+      data-variant={variant}
+      {...breakpointAttributes({
+        key: BREAKPOINT_KEY,
+        breakpoints: breakpoints[BREAKPOINT_KEY],
+      })}
+    >
       <Heading tag="h1" variant={variant}>
         コミュニティ
       </Heading>
@@ -24,6 +42,14 @@ export const Navigation: FC<NavigationProps> = ({ variant }) => {
       />
     </nav>
   );
+};
+
+const horizontalContainerStyle: CSSProperties = {
+  width: "100%",
+  height: "90px",
+  minHeight: 0,
+  flexFlow: "row",
+  padding: theme(({ space }) => space[3]),
 };
 
 const containerStyle = css({
@@ -44,6 +70,12 @@ const containerStyle = css({
   '&[data-variant="dark"]': {
     backgroundColor: theme(({ colors }) => colors.backgroundSubDark),
   },
+  ...breakpointsStyle({
+    key: BREAKPOINT_KEY,
+    style: {
+      horizontal: horizontalContainerStyle,
+    },
+  }),
 });
 
 type ToggleThemeButtonProps = {
