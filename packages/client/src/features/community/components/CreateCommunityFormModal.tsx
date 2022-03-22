@@ -53,7 +53,16 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
           <div className={inputsWrapperStyle()}>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>コミュニティ名</span>
-              <TextInput placeholder="新規コミュニティ名" />
+              <TextInput
+                placeholder="新規コミュニティ名"
+                breakpoint={{
+                  size: {
+                    lg: "default",
+                    md: "default",
+                    sm: "small",
+                  },
+                }}
+              />
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>詳細</span>

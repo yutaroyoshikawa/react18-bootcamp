@@ -1,16 +1,45 @@
-import type { PropsWithChildren, VFC } from "react";
+import type { CSSProperties, PropsWithChildren, VFC } from "react";
 import type { LinkProps as RouterLinkProps } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
-import { css, theme } from "../../../lib/style";
+import {
+  breakpointAttributes,
+  breakpointsStyle,
+  css,
+  theme,
+} from "../../../lib/style";
+import type { BreakPoint } from "../../../type";
 
-export type LinkProps = PropsWithChildren<RouterLinkProps>;
+const BREAKBOINT_KEY = "size";
 
-export const Link: VFC<LinkProps> = ({ children, ...linkProps }) => {
+export type LinkProps = {
+  breakpoint: {
+    [BREAKBOINT_KEY]: BreakPoint<"default" | "small">;
+  };
+} & PropsWithChildren<RouterLinkProps>;
+
+export const Link: VFC<LinkProps> = ({
+  children,
+  breakpoint,
+  ...linkProps
+}) => {
   return (
-    <RouterLink {...linkProps} className={linkStyle()}>
+    <RouterLink
+      {...linkProps}
+      className={linkStyle()}
+      {...breakpointAttributes({
+        key: BREAKBOINT_KEY,
+        breakpoints: breakpoint[BREAKBOINT_KEY],
+      })}
+    >
       {children}
     </RouterLink>
   );
+};
+
+const smallSizeStyle: CSSProperties = {
+  width: "176px",
+  height: "40px",
+  fontSize: theme(({ fontSizes }) => fontSizes[0]),
 };
 
 const linkStyle = css({
@@ -34,4 +63,10 @@ const linkStyle = css({
   "&:hover": {
     filter: "contrast(130%)",
   },
+  ...breakpointsStyle({
+    key: BREAKBOINT_KEY,
+    style: {
+      small: smallSizeStyle,
+    },
+  }),
 });

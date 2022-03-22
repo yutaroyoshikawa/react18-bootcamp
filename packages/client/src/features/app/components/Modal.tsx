@@ -41,7 +41,17 @@ export const Modal: VFC<ModalProps> = ({ children, title, ...modalProps }) => {
             <Icon icon="circleXMark" variant="light" size="sm" />
           </button>
         </div>
-        <Heading tag="h2" variant="light">
+        <Heading
+          tag="h2"
+          variant="light"
+          breakpoint={{
+            size: {
+              lg: "default",
+              md: "default",
+              sm: "small",
+            },
+          }}
+        >
           {title}
         </Heading>
       </div>

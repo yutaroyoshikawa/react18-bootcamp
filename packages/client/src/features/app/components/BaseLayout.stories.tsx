@@ -19,4 +19,13 @@ const Component: FC<BaseLayoutProps> = (args) => {
 
 export const Base: ComponentStoryObj<typeof BaseLayout> = {
   render: (args) => <Component {...args} />,
+  args: {
+    breakpoints: {
+      layout: {
+        lg: "horizontal",
+        md: "vertical",
+        sm: "vertical",
+      },
+    },
+  },
 };

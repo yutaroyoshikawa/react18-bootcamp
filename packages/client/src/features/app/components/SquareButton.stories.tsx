@@ -22,7 +22,13 @@ export const Base: ComponentStoryObj<typeof SquareButton> = {
   render: (args) => <Component {...args} />,
   args: {
     type: "button",
-    size: "default",
     disabled: false,
+    breakpoint: {
+      size: {
+        lg: "default",
+        md: "default",
+        sm: "small",
+      },
+    },
   },
 };

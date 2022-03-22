@@ -17,7 +17,7 @@ export const CommunityDetailPage: FC = () => {
       breakpoints={{
         layout: {
           lg: "horizontal",
-          md: "horizontal",
+          md: "vertical",
           sm: "vertical",
         },
       }}
@@ -37,7 +37,17 @@ const CommunityDetailPageContent: FC = () => {
     <>
       <div className={containerStyle()}>
         <section className={detailsHeaderStyle()}>
-          <Heading tag="h1" variant="light">
+          <Heading
+            tag="h1"
+            variant="light"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
             {community.name}
           </Heading>
           <Button
@@ -61,7 +71,17 @@ const CommunityDetailPageContent: FC = () => {
           <CommunityDetails community={community} />
         </section>
         <section>
-          <Heading tag="h2" variant="light">
+          <Heading
+            tag="h2"
+            variant="light"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
             開催イベント一覧
           </Heading>
           <CommunityEventSummary communityEvent={communityEvent} />

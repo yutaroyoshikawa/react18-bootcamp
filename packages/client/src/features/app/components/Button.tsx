@@ -5,19 +5,14 @@ import {
   css,
   theme,
 } from "../../../lib/style";
+import type { BreakPoint } from "../../../type";
 
-type Size = "default" | "small";
-
-const breakpointKey = "size";
+const BREAKPOINT_KEY = "size";
 
 export type ButtonProps = {
   variant: "primary" | "secondary";
   breakpoint: {
-    [breakpointKey]: {
-      lg: Size;
-      md: Size;
-      sm: Size;
-    };
+    [BREAKPOINT_KEY]: BreakPoint<"default" | "small">;
   };
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -33,8 +28,8 @@ export const Button: VFC<ButtonProps> = ({
       data-variant={variant}
       className={buttonStyle()}
       {...breakpointAttributes({
-        key: breakpointKey,
-        breakpoints: breakpoint[breakpointKey],
+        key: BREAKPOINT_KEY,
+        breakpoints: breakpoint[BREAKPOINT_KEY],
       })}
     >
       {children}
@@ -45,6 +40,7 @@ export const Button: VFC<ButtonProps> = ({
 const smallSizeStyle: CSSProperties = {
   width: "176px",
   height: "40px",
+  fontSize: theme(({ fontSizes }) => fontSizes[0]),
 };
 
 const buttonStyle = css({
@@ -70,7 +66,7 @@ const buttonStyle = css({
     filter: "contrast(50%)",
   },
   ...breakpointsStyle({
-    key: breakpointKey,
+    key: BREAKPOINT_KEY,
     style: {
       small: smallSizeStyle,
     },

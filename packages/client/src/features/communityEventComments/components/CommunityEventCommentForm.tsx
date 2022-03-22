@@ -28,7 +28,17 @@ export const CommunityEventCommentForm: FC<CommunityEventCommentFormProps> = ({
         rows={1}
         placeholder="コメントを追加"
       />
-      <SquareButton type="submit" size="default" disabled={false}>
+      <SquareButton
+        type="submit"
+        disabled={false}
+        breakpoint={{
+          size: {
+            lg: "default",
+            md: "default",
+            sm: "small",
+          },
+        }}
+      >
         送信
       </SquareButton>
     </form>

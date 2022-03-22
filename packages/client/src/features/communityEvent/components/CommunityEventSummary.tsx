@@ -39,7 +39,17 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
       </figure>
       <div className={infoWrapperStyle()}>
         <div>
-          <Heading tag="h2" variant="light">
+          <Heading
+            tag="h3"
+            variant="light"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
             {communityEvent.name}
           </Heading>
           <time className={holdAtTextStyle()}>開催日: {holdAt}</time>

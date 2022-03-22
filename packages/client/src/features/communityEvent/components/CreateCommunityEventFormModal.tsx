@@ -36,7 +36,16 @@ export const CreateCommunityEventFormModal: FC<
           <div className={inputsWrapperStyle()}>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>イベント名</span>
-              <TextInput placeholder="新規イベント名" />
+              <TextInput
+                placeholder="新規イベント名"
+                breakpoint={{
+                  size: {
+                    lg: "default",
+                    md: "default",
+                    sm: "small",
+                  },
+                }}
+              />
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>開催日時</span>

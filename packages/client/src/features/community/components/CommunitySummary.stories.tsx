@@ -12,5 +12,12 @@ export const Base: ComponentStoryObj<typeof CommunitySummary> = {
   args: {
     community: dummyCommunity(),
     isJoined: false,
+    breakpoint: {
+      layout: {
+        lg: "horizontal",
+        md: "horizontal",
+        sm: "vertical",
+      },
+    },
   },
 };

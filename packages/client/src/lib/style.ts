@@ -31,7 +31,7 @@ export const breakpointsStyle = ({
         ])
       ),
     },
-    "@media screen and (min-width:600px)": {
+    "@media screen and (max-width:1024px) ": {
       ...Object.fromEntries(
         Object.keys(style).map((value) => [
           `&[data-${key}-md="${value}"]`,
@@ -77,6 +77,7 @@ const themeKey = {
     backgroundBase: "background-base",
   },
   fontSizes: {
+    0: "0",
     1: "1",
     2: "2",
     3: "3",
@@ -141,6 +142,7 @@ const {
       [themeKey.colors.button]: "#FFFFFF",
     },
     fontSizes: {
+      [themeKey.fontSizes[0]]: "12px",
       [themeKey.fontSizes[1]]: "16px",
       [themeKey.fontSizes[2]]: "18px",
       [themeKey.fontSizes[3]]: "24px",

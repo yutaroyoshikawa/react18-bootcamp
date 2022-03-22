@@ -31,7 +31,17 @@ export const Navigation: FC<NavigationProps> = ({ variant, breakpoints }) => {
         breakpoints: breakpoints[BREAKPOINT_KEY],
       })}
     >
-      <Heading tag="h1" variant={variant}>
+      <Heading
+        tag="h1"
+        variant={variant}
+        breakpoint={{
+          size: {
+            lg: "default",
+            md: "default",
+            sm: "small",
+          },
+        }}
+      >
         コミュニティ
       </Heading>
       <ToggleThemeButton

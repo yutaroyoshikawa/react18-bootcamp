@@ -1,13 +1,42 @@
-import type { FC, InputHTMLAttributes } from "react";
-import { css, theme } from "../../../lib/style";
+import type { CSSProperties, FC, InputHTMLAttributes } from "react";
+import {
+  breakpointAttributes,
+  breakpointsStyle,
+  css,
+  theme,
+} from "../../../lib/style";
+import type { BreakPoint } from "../../../type";
 
-type TextInputProps = Omit<
+const BREAKPOINT_KEY = "size";
+
+type TextInputProps = {
+  breakpoint: {
+    [BREAKPOINT_KEY]: BreakPoint<"default" | "small">;
+  };
+} & Omit<
   InputHTMLAttributes<HTMLInputElement>,
   "className" | "type" | "children"
 >;
 
-export const TextInput: FC<TextInputProps> = ({ ...inputProps }) => {
-  return <input {...inputProps} type="text" className={inputStyle()} />;
+export const TextInput: FC<TextInputProps> = ({
+  breakpoint,
+  ...inputProps
+}) => {
+  return (
+    <input
+      {...inputProps}
+      type="text"
+      className={inputStyle()}
+      {...breakpointAttributes({
+        key: BREAKPOINT_KEY,
+        breakpoints: breakpoint[BREAKPOINT_KEY],
+      })}
+    />
+  );
+};
+
+const smallInputStyle: CSSProperties = {
+  height: "56px",
 };
 
 const inputStyle = css({
@@ -22,4 +51,10 @@ const inputStyle = css({
   color: theme(({ colors }) => colors.text),
   fontSize: theme(({ fontSizes }) => fontSizes[2]),
   boxShadow: theme(({ shadows }) => shadows.elevationMid),
+  ...breakpointsStyle({
+    key: BREAKPOINT_KEY,
+    style: {
+      small: smallInputStyle,
+    },
+  }),
 });

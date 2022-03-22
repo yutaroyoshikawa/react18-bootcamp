@@ -25,7 +25,17 @@ export const CommunityDetails: FC<CommunityDetailsProps> = ({ community }) => {
       </div>
       <p className={detailsTextStyle()}>{community.details}</p>
       <div>
-        <Heading tag="h2" variant="light">
+        <Heading
+          tag="h2"
+          variant="light"
+          breakpoint={{
+            size: {
+              lg: "default",
+              md: "default",
+              sm: "small",
+            },
+          }}
+        >
           メンバー数
         </Heading>
         <p className={membershipTextStyle()}>{community.membership}人</p>

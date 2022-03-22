@@ -1,22 +1,44 @@
-import type { ButtonHTMLAttributes, VFC } from "react";
-import { css, theme } from "../../../lib/style";
+import type { ButtonHTMLAttributes, CSSProperties, VFC } from "react";
+import {
+  breakpointAttributes,
+  breakpointsStyle,
+  css,
+  theme,
+} from "../../../lib/style";
+import type { BreakPoint } from "../../../type";
+
+const BREAKPOINT_KEY = "size";
 
 export type SquareButtonProps = {
-  size: "default" | "small";
   type: NonNullable<ButtonHTMLAttributes<HTMLButtonElement>["type"]>;
   disabled: boolean;
+  breakpoint: {
+    [BREAKPOINT_KEY]: BreakPoint<"default" | "small">;
+  };
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className">;
 
 export const SquareButton: VFC<SquareButtonProps> = ({
-  size,
   children,
+  breakpoint,
   ...buttonProps
 }) => {
   return (
-    <button {...buttonProps} data-size={size} className={buttonStyle()}>
+    <button
+      {...buttonProps}
+      className={buttonStyle()}
+      {...breakpointAttributes({
+        key: BREAKPOINT_KEY,
+        breakpoints: breakpoint[BREAKPOINT_KEY],
+      })}
+    >
       {children}
     </button>
   );
+};
+
+const smallButtonStyle: CSSProperties = {
+  width: "56px",
+  height: "56px",
 };
 
 const buttonStyle = css({
@@ -38,4 +60,10 @@ const buttonStyle = css({
     cursor: "not-allowed",
     filter: "contrast(50%)",
   },
+  ...breakpointsStyle({
+    key: BREAKPOINT_KEY,
+    style: {
+      small: smallButtonStyle,
+    },
+  }),
 });

@@ -18,7 +18,7 @@ export const Home: FC = () => {
         breakpoints={{
           layout: {
             lg: "horizontal",
-            md: "horizontal",
+            md: "vertical",
             sm: "vertical",
           },
         }}
@@ -39,7 +39,17 @@ const PageContent: FC = () => {
     <>
       <div className={containerStyle()}>
         <div className={titleContainer()}>
-          <Heading tag="h1" variant={theme}>
+          <Heading
+            tag="h1"
+            variant={theme}
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
             コミュニティ
           </Heading>
           <Button
@@ -61,6 +71,13 @@ const PageContent: FC = () => {
         <div className={searchWrapper()}>
           <SearchCommunityForm
             onClickSearch={(keyword) => console.log(keyword)}
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
           />
         </div>
         {Array.from({ length: 5 }).map((_, idx) => (

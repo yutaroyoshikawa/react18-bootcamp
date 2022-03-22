@@ -10,5 +10,12 @@ export default meta;
 export const Base: ComponentStoryObj<typeof TextInput> = {
   args: {
     placeholder: "テキスト",
+    breakpoint: {
+      size: {
+        lg: "default",
+        md: "default",
+        sm: "small",
+      },
+    },
   },
 };

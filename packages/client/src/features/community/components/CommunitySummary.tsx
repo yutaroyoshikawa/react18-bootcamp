@@ -51,9 +51,25 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
           height={240}
         />
       </figure>
-      <div className={detailsStyle()}>
+      <div
+        className={detailsStyle()}
+        {...breakpointAttributes({
+          key: BREAKPOINT_KEY,
+          breakpoints: breakpoint.layout,
+        })}
+      >
         <div className={summaryInfoStyle()}>
-          <Heading tag="h2" variant="light">
+          <Heading
+            tag="h2"
+            variant="light"
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
             {community.name}
           </Heading>
           <span className={categoryStyle()}>
@@ -63,7 +79,18 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
         </div>
         <div className={funcStyle()}>
           {isJoined ? (
-            <Link to={`/communities/${community.id}`}>詳細を見る</Link>
+            <Link
+              to={`/communities/${community.id}`}
+              breakpoint={{
+                size: {
+                  lg: variants.button[breakpoint.layout.lg],
+                  md: variants.button[breakpoint.layout.md],
+                  sm: variants.button[breakpoint.layout.sm],
+                },
+              }}
+            >
+              詳細を見る
+            </Link>
           ) : (
             <Button
               variant="primary"
@@ -86,10 +113,13 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
 
 const sumbnailWrapperStyle = css({
   margin: 0,
+  overflow: "hidden",
 });
 
 const verticalContainerStyle: CSSProperties = {
-  display: "block",
+  gridTemplateRows: "60px 1fr",
+  gridTemplateColumns: "initial",
+  minWidth: "380px",
 };
 
 const containerStyle = css({
@@ -100,7 +130,8 @@ const containerStyle = css({
   borderRadius: theme(({ radii }) => radii.radius1),
   boxShadow: theme(({ shadows }) => shadows.elevationLow),
   boxSizing: "border-box",
-  display: "flex",
+  display: "grid",
+  gridTemplateColumns: "130px 1fr",
   overflow: "hidden",
   ...breakpointsStyle({
     key: BREAKPOINT_KEY,
@@ -110,6 +141,12 @@ const containerStyle = css({
   }),
 });
 
+const verticalDetailsStyle: CSSProperties = {
+  padding: `${theme(({ space }) => space[2])} ${theme(
+    ({ space }) => space[1]
+  )} ${theme(({ space }) => space[1])} ${theme(({ space }) => space[1])}`,
+};
+
 const detailsStyle = css({
   width: "100%",
   padding: `${theme(({ space }) => space[3])} ${theme(
@@ -118,6 +155,13 @@ const detailsStyle = css({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",
+  boxSizing: "border-box",
+  ...breakpointsStyle({
+    key: BREAKPOINT_KEY,
+    style: {
+      vertical: verticalDetailsStyle,
+    },
+  }),
 });
 
 const summaryInfoStyle = css({

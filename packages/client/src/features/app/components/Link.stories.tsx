@@ -17,5 +17,12 @@ export const Base: ComponentStoryObj<typeof Link> = {
   render: (args) => <Component {...args} />,
   args: {
     to: "#",
+    breakpoint: {
+      size: {
+        lg: "default",
+        md: "default",
+        sm: "small",
+      },
+    },
   },
 };
