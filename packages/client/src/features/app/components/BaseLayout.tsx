@@ -91,7 +91,7 @@ const mainStyle = css({
   padding: `${theme(({ space }) => space[4])} ${theme(
     ({ space }) => space[6]
   )}`,
-  boxSizing: "content-box",
+  boxSizing: "border-box",
   marginLeft: "290px",
   ...breakpointsStyle({
     key: BREAKPOINT_KEY,

@@ -55,7 +55,7 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
         className={detailsStyle()}
         {...breakpointAttributes({
           key: BREAKPOINT_KEY,
-          breakpoints: breakpoint.layout,
+          breakpoints: breakpoint[BREAKPOINT_KEY],
         })}
       >
         <div className={summaryInfoStyle()}>
@@ -119,12 +119,10 @@ const sumbnailWrapperStyle = css({
 const verticalContainerStyle: CSSProperties = {
   gridTemplateRows: "60px 1fr",
   gridTemplateColumns: "initial",
-  minWidth: "380px",
 };
 
 const containerStyle = css({
   width: "100%",
-  minWidth: "500px",
   height: "240px",
   backgroundColor: theme(({ colors }) => colors.backgroundBase),
   borderRadius: theme(({ radii }) => radii.radius1),

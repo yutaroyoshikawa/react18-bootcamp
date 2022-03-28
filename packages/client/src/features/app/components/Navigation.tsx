@@ -56,10 +56,9 @@ export const Navigation: FC<NavigationProps> = ({ variant, breakpoints }) => {
 
 const horizontalContainerStyle: CSSProperties = {
   width: "100%",
-  height: "90px",
   minHeight: 0,
   flexFlow: "row",
-  padding: theme(({ space }) => space[3]),
+  padding: theme(({ space }) => space[2]),
 };
 
 const containerStyle = css({
