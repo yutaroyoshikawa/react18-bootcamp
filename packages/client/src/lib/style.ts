@@ -120,6 +120,7 @@ const {
   globalCss,
   createTheme,
   theme: baseTheme,
+  keyframes,
 } = createStitches({
   theme: {
     media: {
@@ -174,7 +175,7 @@ const {
   },
 });
 
-export { css, baseTheme };
+export { css, baseTheme, keyframes };
 
 export const darkTheme = createTheme<Theme, string>({
   colors: {
