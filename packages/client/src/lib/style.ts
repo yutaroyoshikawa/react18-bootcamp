@@ -19,7 +19,7 @@ export const breakpointsStyle = ({
   style,
   key,
 }: {
-  style: { [key: string]: CSSProperties };
+  style: { [key: string]: CSSProperties | { [key: string]: CSSProperties } };
   key: string;
 }): Record<string, CSSProperties> => {
   return {

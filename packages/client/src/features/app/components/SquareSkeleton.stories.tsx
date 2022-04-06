@@ -9,7 +9,7 @@ export default meta;
 
 export const Base: ComponentStoryObj<typeof SquareSkeleton> = {
   args: {
-    width: 200,
-    height: 30,
+    width: "200px",
+    height: "30px",
   },
 };

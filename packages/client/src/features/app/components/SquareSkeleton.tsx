@@ -2,8 +2,8 @@ import type { FC } from "react";
 import { css, keyframes, theme } from "../../../lib/style";
 
 type SquareSkelectonProps = {
-  width: number;
-  height: number;
+  width: string;
+  height: string;
 };
 
 export const SquareSkeleton: FC<SquareSkelectonProps> = ({ width, height }) => {
@@ -11,10 +11,10 @@ export const SquareSkeleton: FC<SquareSkelectonProps> = ({ width, height }) => {
     <div
       className={skeletonStyle()}
       style={{
-        width: `${width}px`,
-        height: `${height}px`,
+        width,
+        height,
       }}
-      aria-label="progressbar"
+      role="progressbar"
     />
   );
 };
@@ -26,8 +26,7 @@ const loading = keyframes({
 });
 
 const skeletonStyle = css({
-  backgroundColor: "#FFF",
-  borderRadius: theme(({ radii }) => radii.radius1),
+  backgroundColor: theme(({ colors }) => colors.backgroundBase),
   "&:empty::after": {
     content: '""',
     display: "block",
@@ -35,7 +34,7 @@ const skeletonStyle = css({
     height: "100%",
     backgroundImage:
       "linear-gradient(90deg, rgba(150, 150, 150, 0) 0, rgba(150, 150, 150, .4) 50%, rgba(150, 150, 150, 0) 100%)",
-    backgroundSize: "80px 100%",
+    backgroundSize: "50% 100%",
     backgroundPosition: "-150% 0",
     backgroundRepeat: "no-repeat",
     animation: `${loading} 1.5s infinite`,
