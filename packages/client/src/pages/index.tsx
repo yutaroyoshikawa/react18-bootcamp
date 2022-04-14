@@ -6,6 +6,7 @@ import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
 import { useTheme } from "../features/app/modules/themeHooks";
 import { CommunitySummary } from "../features/community/components/CommunitySummary";
+import { CommunitySummarySkeleton } from "../features/community/components/CommunitySummarySkeleton";
 import { CreateCommunityFormModal } from "../features/community/components/CreateCommunityFormModal";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
 import { css, theme } from "../lib/style";
@@ -80,6 +81,15 @@ const PageContent: FC = () => {
             }}
           />
         </div>
+        <CommunitySummarySkeleton
+          breakpoint={{
+            layout: {
+              lg: "horizontal",
+              md: "horizontal",
+              sm: "vertical",
+            },
+          }}
+        />
         {Array.from({ length: 5 }).map((_, idx) => (
           <CommunitySummary
             key={idx}

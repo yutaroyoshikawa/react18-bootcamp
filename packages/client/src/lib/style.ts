@@ -50,6 +50,57 @@ export const breakpointsStyle = ({
   };
 };
 
+export const getBreakpointSettings = <T extends string>(key: T) => {
+  const breakpointAttributes = <Variants extends string>({
+    lg,
+    md,
+    sm,
+  }: {
+    lg: Variants;
+    md: Variants;
+    sm: Variants;
+  }) => {
+    return {
+      [`data-${key}-lg`]: lg,
+      [`data-${key}-md`]: md,
+      [`data-${key}-sm`]: sm,
+    };
+  };
+
+  const breakpointsStyle = (style: {
+    [key: string]: CSSProperties | { [key: string]: CSSProperties };
+  }): Record<string, CSSProperties> => {
+    return {
+      "@media screen and (max-width:599px)": {
+        ...Object.fromEntries(
+          Object.keys(style).map((value) => [
+            `&[data-${key}-sm="${value}"]`,
+            style[value],
+          ])
+        ),
+      },
+      "@media screen and (max-width:1024px) ": {
+        ...Object.fromEntries(
+          Object.keys(style).map((value) => [
+            `&[data-${key}-md="${value}"]`,
+            style[value],
+          ])
+        ),
+      },
+      "@media screen and (min-width:1025px)": {
+        ...Object.fromEntries(
+          Object.keys(style).map((value) => [
+            `&[data-${key}-lg="${value}"]`,
+            style[value],
+          ])
+        ),
+      },
+    };
+  };
+
+  return [breakpointAttributes, breakpointsStyle] as const;
+};
+
 type Theme = {
   colors: {
     background: string;

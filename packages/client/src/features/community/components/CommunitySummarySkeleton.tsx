@@ -20,9 +20,8 @@ export const CommunitySummarySkeleton: FC<CommunitySummarySkeletonProps> = ({
   breakpoint,
 }) => {
   return (
-    <div
-      className={containerStyle()}
-      role="progressbar"
+    <progress
+      className={skeletonStyle()}
       {...breakpointAttributes({
         key: BREAKPOINT_KEY,
         breakpoints: breakpoint.layout,
@@ -92,7 +91,7 @@ const SKELETON_VERT_VER = {
 } as const;
 
 const SKELETON_POSITION = {
-  sumbnail: `0 0`,
+  sumbnail: "0 0",
   title: `calc(${CARD_GAP} + ${SKELETON_OBJ_SIZE.sumbnail.width}) ${CARD_PADDING}`,
   label: `calc(${CARD_GAP} + ${SKELETON_OBJ_SIZE.sumbnail.width}) 70px`,
   desc: `calc(${CARD_GAP} + ${SKELETON_OBJ_SIZE.sumbnail.width}) 100px`,
@@ -177,7 +176,7 @@ const containerStyleVertical: CSSProperties | { [key: string]: CSSProperties } =
     },
   };
 
-const containerStyle = css({
+const skeletonStyle = css({
   width: "100%",
   height: "240px",
   backgroundColor: "#aaa",
@@ -185,6 +184,7 @@ const containerStyle = css({
   boxShadow: theme(({ shadows }) => shadows.elevationLow),
   boxSizing: "border-box",
   overflow: "hidden",
+  position: "relative",
   ...breakpointsStyle({
     key: BREAKPOINT_KEY,
     style: {
@@ -196,6 +196,8 @@ const containerStyle = css({
     display: "block",
     width: "100%",
     height: "100%",
+    position: "absolute",
+    top: 0,
     backgroundImage: `
       linear-gradient(
         90deg,
