@@ -1,29 +1,21 @@
-import { ApiError, Community, CommunityService } from "api-server";
-import useSWRInfinite from "swr/infinite";
+import {
+  ApiError,
+  Community,
+  CommunityMember,
+  CommunityService,
+} from "api-server";
+import useSWR from "swr";
 import { apiClient, handleApiError } from "../../../lib/api";
 
-type ListCommunityResponse = {
-  communities: {
-    community: Community;
-    isJoined?: boolean | null | undefined;
-  }[];
-  beforeSize: number;
-  totalSize: number;
+type CommunityResponse = {
+  community: Community;
+  isJoined?: boolean | null | undefined;
+  members: CommunityMember[];
 };
 
-export const useCommunities = ({
-  requestSize,
-  keyword,
-}: {
-  requestSize: number;
-  keyword?: string;
-}) => {
-  const { data, error, setSize, size } = useSWRInfinite<
-    ListCommunityResponse,
-    Error | ApiError
-  >(
-    (pageIndex, prevPageData) =>
-      getKey({ requestSize, pageIndex, prevPageData, keyword }),
+export const useCommunity = ({ communityId }: { communityId: string }) => {
+  const { data, error } = useSWR<CommunityResponse, Error | ApiError>(
+    getKey({ communityId }),
     fetcher,
     {
       suspense: true,
@@ -33,59 +25,20 @@ export const useCommunities = ({
   return {
     data,
     error,
-    loading: !error && !data,
-    size,
-    setSize,
+    loading: !data && !error,
   };
 };
 
-const getKey = ({
-  requestSize,
-  pageIndex,
-  prevPageData,
-  keyword,
-}: {
-  requestSize: number;
-  pageIndex: number;
-  prevPageData?: ListCommunityResponse | null;
-  keyword?: string;
-}) => {
-  if (
-    typeof prevPageData?.totalSize === "number" &&
-    prevPageData.totalSize >= requestSize * pageIndex
-  ) {
-    return null;
-  }
-
-  if (!prevPageData?.communities) {
-    return {
-      key: `${CommunityService.name}/${CommunityService.prototype.listCommunity.name}`,
-      requestSize,
-      keyword,
-    };
-  }
-
+const getKey = ({ communityId }: { communityId: string }) => {
   return {
-    key: `${CommunityService.name}/${CommunityService.prototype.listCommunity.name}`,
-    requestSize,
-    keyword,
-    beginCursor:
-      prevPageData.communities[prevPageData.communities.length - 1].community
-        ?.id,
+    key: `${CommunityService.name}/${CommunityService.prototype.getCommunity.name}`,
+    communityId,
   };
 };
 
-const fetcher = async ({
-  requestSize,
-  beginCursor,
-  keyword,
-}: NonNullable<ReturnType<typeof getKey>>) => {
+const fetcher = async ({ communityId }: ReturnType<typeof getKey>) => {
   const result = await apiClient.community
-    .listCommunity({
-      requestSize,
-      beginCursor,
-      keyword,
-    })
+    .getCommunity({ communityId })
     .catch(handleApiError);
 
   if (result instanceof Error) {

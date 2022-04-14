@@ -1,14 +1,16 @@
 import type { FC } from "react";
-import { useState } from "react";
-import { dummyCommunity } from "../../../testdata/community";
-import { dummyCommunityEvent } from "../../../testdata/communityEvent";
+import { Suspense, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import { BaseLayout } from "../../features/app/components/BaseLayout";
 import { Button } from "../../features/app/components/Button";
 import { Heading } from "../../features/app/components/Heading";
 import { Image } from "../../features/app/components/Image";
+import { replaceImageSize } from "../../features/app/modules/imageUrlUtils";
 import { CommunityDetails } from "../../features/community/components/CommunityDetails";
+import { useCommunity } from "../../features/community/modules/communityHooks";
 import { CommunityEventSummary } from "../../features/communityEvent/components/CommunityEventSummary";
 import { CreateCommunityEventFormModal } from "../../features/communityEvent/components/CreateCommunityEventFormModal";
+import { useListCommunityEvent } from "../../features/communityEvent/modules/communityEventsHooks";
 import { css, theme } from "../../lib/style";
 
 export const CommunityDetailPage: FC = () => {
@@ -22,16 +24,33 @@ export const CommunityDetailPage: FC = () => {
         },
       }}
     >
-      <CommunityDetailPageContent />
+      <Suspense fallback={null}>
+        <CommunityDetailPageContent />
+      </Suspense>
     </BaseLayout>
   );
 };
 
-const community = dummyCommunity();
-const communityEvent = dummyCommunityEvent();
-
 const CommunityDetailPageContent: FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { id } = useParams();
+  const { data } = useCommunity({ communityId: id ?? "" });
+
+  const thumbnailUrl = useMemo(() => {
+    if (typeof data?.community.imageUrl === "undefined") {
+      return "";
+    }
+
+    return replaceImageSize({
+      imageUrl: data.community.imageUrl,
+      width: 696,
+      height: 230,
+    });
+  }, [data?.community.imageUrl]);
+
+  if (!data || !id) {
+    return null;
+  }
 
   return (
     <>
@@ -48,7 +67,7 @@ const CommunityDetailPageContent: FC = () => {
               },
             }}
           >
-            {community.name}
+            {data.community.name}
           </Heading>
           <Button
             variant="primary"
@@ -65,10 +84,10 @@ const CommunityDetailPageContent: FC = () => {
           </Button>
         </section>
         <figure className={sumbnailWrapperStyle()}>
-          <Image src={community.imageUrl} alt="" width={696} height={230} />
+          <Image src={thumbnailUrl} alt="" width={696} height={230} />
         </figure>
         <section>
-          <CommunityDetails community={community} />
+          <CommunityDetails community={data.community} />
         </section>
         <section>
           <Heading
@@ -84,7 +103,9 @@ const CommunityDetailPageContent: FC = () => {
           >
             開催イベント一覧
           </Heading>
-          <CommunityEventSummary communityEvent={communityEvent} />
+          <Suspense fallback={null}>
+            <ListCommunitEvent communityId={id} />
+          </Suspense>
         </section>
       </div>
       <CreateCommunityEventFormModal
@@ -115,3 +136,42 @@ const sumbnailWrapperStyle = css({
   borderRadius: theme(({ radii }) => radii.radius1),
   overflow: "hidden",
 });
+
+const ListCommunitEvent: FC<{ communityId: string }> = ({ communityId }) => {
+  const { data } = useListCommunityEvent({ communityId, requestSize: 5 });
+
+  const events = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    return data.flatMap(({ events }) =>
+      events.map((event) => ({
+        ...event,
+        communityEvent: {
+          ...event.communityEvent,
+          imageUrl: replaceImageSize({
+            imageUrl: event.communityEvent.imageUrl,
+            width: 696,
+            height: 108,
+          }),
+        },
+      }))
+    );
+  }, [data]);
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <>
+      {events.map(({ communityEvent }) => (
+        <CommunityEventSummary
+          key={communityEvent.id}
+          communityEvent={communityEvent}
+        />
+      ))}
+    </>
+  );
+};
