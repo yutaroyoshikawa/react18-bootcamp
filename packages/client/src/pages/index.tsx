@@ -32,6 +32,7 @@ export const Home: FC = () => {
 
 const PageContent: FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState<string>();
   const [theme] = useTheme();
 
   return (
@@ -69,7 +70,7 @@ const PageContent: FC = () => {
 
         <div className={searchWrapper()}>
           <SearchCommunityForm
-            onClickSearch={(keyword) => console.log(keyword)}
+            onClickSearch={(keyword) => setSearchKeyword(keyword)}
             breakpoint={{
               size: {
                 lg: "default",
@@ -80,7 +81,7 @@ const PageContent: FC = () => {
           />
         </div>
         <Suspense fallback={<CommunitiListSkeleton />}>
-          <CommunityList />
+          <CommunityList keyword={searchKeyword} />
         </Suspense>
       </div>
       <CreateCommunityFormModal
@@ -109,8 +110,11 @@ const searchWrapper = css({
   top: theme(({ space }) => space[4]),
 });
 
-const CommunityList: FC = () => {
-  const { data } = useCommunities({ requestSize: 5 });
+const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
+  const { data } = useCommunities({
+    requestSize: 5,
+    keyword: keyword ? keyword : undefined,
+  });
 
   const communities = useMemo(() => {
     if (!data) {

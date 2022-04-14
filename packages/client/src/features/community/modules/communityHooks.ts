@@ -11,13 +11,19 @@ type ListCommunityResponse = {
   totalSize: number;
 };
 
-export const useCommunities = ({ requestSize }: { requestSize: number }) => {
+export const useCommunities = ({
+  requestSize,
+  keyword,
+}: {
+  requestSize: number;
+  keyword?: string;
+}) => {
   const { data, error, setSize, size } = useSWRInfinite<
     ListCommunityResponse,
     Error | ApiError
   >(
     (pageIndex, prevPageData) =>
-      getKey({ requestSize, pageIndex, prevPageData }),
+      getKey({ requestSize, pageIndex, prevPageData, keyword }),
     fetcher,
     {
       suspense: true,
@@ -37,10 +43,12 @@ const getKey = ({
   requestSize,
   pageIndex,
   prevPageData,
+  keyword,
 }: {
   requestSize: number;
   pageIndex: number;
   prevPageData?: ListCommunityResponse | null;
+  keyword?: string;
 }) => {
   if (
     typeof prevPageData?.totalSize === "number" &&
@@ -53,12 +61,14 @@ const getKey = ({
     return {
       key: `${CommunityService.name}/${CommunityService.prototype.listCommunity.name}`,
       requestSize,
+      keyword,
     };
   }
 
   return {
     key: `${CommunityService.name}/${CommunityService.prototype.listCommunity.name}`,
     requestSize,
+    keyword,
     beginCursor:
       prevPageData.communities[prevPageData.communities.length - 1].community
         ?.id,
@@ -68,11 +78,13 @@ const getKey = ({
 const fetcher = async ({
   requestSize,
   beginCursor,
+  keyword,
 }: NonNullable<ReturnType<typeof getKey>>) => {
   const result = await apiClient.community
     .listCommunity({
       requestSize,
       beginCursor,
+      keyword,
     })
     .catch(handleApiError);
 

@@ -55,7 +55,7 @@ export const SearchCommunityForm: FC<SearchCommunityFormProps> = ({
     >
       <TextInput
         placeholder="Search"
-        onBlur={(event) => setKeyword(event.target.value)}
+        onChange={(event) => setKeyword(event.target.value)}
         breakpoint={{
           size: {
             lg: breakpoints.textInput[breakpoint[BREAKPOINT_KEY].lg],
