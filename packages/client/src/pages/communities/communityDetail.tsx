@@ -6,6 +6,7 @@ import { Button } from "../../features/app/components/Button";
 import { Heading } from "../../features/app/components/Heading";
 import { Image } from "../../features/app/components/Image";
 import { replaceImageSize } from "../../features/app/modules/imageUrlUtils";
+import { useTheme } from "../../features/app/modules/themeHooks";
 import { CommunityDetails } from "../../features/community/components/CommunityDetails";
 import { useCommunity } from "../../features/community/modules/communityHooks";
 import { CommunityEventSummary } from "../../features/communityEvent/components/CommunityEventSummary";
@@ -35,6 +36,7 @@ const CommunityDetailPageContent: FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { id } = useParams();
   const { data } = useCommunity({ communityId: id ?? "" });
+  const [theme] = useTheme();
 
   const thumbnailUrl = useMemo(() => {
     if (typeof data?.community.imageUrl === "undefined") {
@@ -58,7 +60,7 @@ const CommunityDetailPageContent: FC = () => {
         <section className={detailsHeaderStyle()}>
           <Heading
             tag="h1"
-            variant="light"
+            variant={theme === "light" ? "light" : "dark"}
             breakpoint={{
               size: {
                 lg: "default",
@@ -89,10 +91,10 @@ const CommunityDetailPageContent: FC = () => {
         <section>
           <CommunityDetails community={data.community} />
         </section>
-        <section>
+        <section className={eventListWrapperStyle()}>
           <Heading
             tag="h2"
-            variant="light"
+            variant={theme === "light" ? "light" : "dark"}
             breakpoint={{
               size: {
                 lg: "default",
@@ -137,6 +139,11 @@ const sumbnailWrapperStyle = css({
   overflow: "hidden",
 });
 
+const eventListWrapperStyle = css({
+  display: "grid",
+  rowGap: theme(({ space }) => space[3]),
+});
+
 const ListCommunitEvent: FC<{ communityId: string }> = ({ communityId }) => {
   const { data } = useListCommunityEvent({ communityId, requestSize: 5 });
 
@@ -165,13 +172,25 @@ const ListCommunitEvent: FC<{ communityId: string }> = ({ communityId }) => {
   }
 
   return (
-    <>
+    <ul className={listStyle()}>
       {events.map(({ communityEvent }) => (
-        <CommunityEventSummary
-          key={communityEvent.id}
-          communityEvent={communityEvent}
-        />
+        <li className={listItem()} key={communityEvent.id}>
+          <CommunityEventSummary communityEvent={communityEvent} />
+        </li>
       ))}
-    </>
+    </ul>
   );
 };
+
+const listStyle = css({
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
+  display: "grid",
+  rowGap: theme(({ space }) => space[4]),
+});
+
+const listItem = css({
+  margin: 0,
+  padding: 0,
+});
