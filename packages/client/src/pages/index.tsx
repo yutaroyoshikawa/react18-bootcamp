@@ -1,6 +1,5 @@
 import type { FC } from "react";
-import { useState } from "react";
-import { dummyCommunity } from "../../testdata/community";
+import { Suspense, useMemo, useState } from "react";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
@@ -9,6 +8,7 @@ import { CommunitySummary } from "../features/community/components/CommunitySumm
 import { CommunitySummarySkeleton } from "../features/community/components/CommunitySummarySkeleton";
 import { CreateCommunityFormModal } from "../features/community/components/CreateCommunityFormModal";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
+import { useCommunities } from "../features/community/modules/communityHooks";
 import { css, theme } from "../lib/style";
 
 export const Home: FC = () => {
@@ -29,8 +29,6 @@ export const Home: FC = () => {
     </>
   );
 };
-
-const community = dummyCommunity();
 
 const PageContent: FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -81,29 +79,9 @@ const PageContent: FC = () => {
             }}
           />
         </div>
-        <CommunitySummarySkeleton
-          breakpoint={{
-            layout: {
-              lg: "horizontal",
-              md: "horizontal",
-              sm: "vertical",
-            },
-          }}
-        />
-        {Array.from({ length: 5 }).map((_, idx) => (
-          <CommunitySummary
-            key={idx}
-            community={community}
-            isJoined={true}
-            breakpoint={{
-              layout: {
-                lg: "horizontal",
-                md: "horizontal",
-                sm: "vertical",
-              },
-            }}
-          />
-        ))}
+        <Suspense fallback={<CommunitiListSkeleton />}>
+          <CommunityList />
+        </Suspense>
       </div>
       <CreateCommunityFormModal
         isOpen={isOpenModal}
@@ -130,3 +108,72 @@ const searchWrapper = css({
   position: "sticky",
   top: theme(({ space }) => space[4]),
 });
+
+const CommunityList: FC = () => {
+  const { data } = useCommunities({ requestSize: 5 });
+
+  const communities = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    const replaceImageSize = (imageUrl: string) => {
+      const replacedWidth = imageUrl.replace("{width}", "130");
+      const replacedWidthAndHeight = replacedWidth.replace("{height}", "240");
+
+      return replacedWidthAndHeight;
+    };
+
+    return data.flatMap(({ communities }) =>
+      communities.map((communityInfo) => ({
+        ...communityInfo,
+        community: {
+          ...communityInfo.community,
+          imageUrl: replaceImageSize(communityInfo.community.imageUrl),
+        },
+      }))
+    );
+  }, [data]);
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <>
+      {communities.map(({ community, isJoined }) => (
+        <CommunitySummary
+          key={community.id}
+          community={community}
+          isJoined={!!isJoined}
+          breakpoint={{
+            layout: {
+              lg: "horizontal",
+              md: "horizontal",
+              sm: "vertical",
+            },
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
+const CommunitiListSkeleton: FC = () => {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, idx) => (
+        <CommunitySummarySkeleton
+          key={idx}
+          breakpoint={{
+            layout: {
+              lg: "horizontal",
+              md: "horizontal",
+              sm: "vertical",
+            },
+          }}
+        />
+      ))}
+    </>
+  );
+};

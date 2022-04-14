@@ -3,22 +3,25 @@ import useSWRInfinite from "swr/infinite";
 import { apiClient, handleApiError } from "../../../lib/api";
 
 type ListCommunityResponse = {
-  communities?: {
-    community?: Community;
-    isJoined?: boolean | null;
+  communities: {
+    community: Community;
+    isJoined?: boolean | null | undefined;
   }[];
-  before_size?: number;
-  total_size?: number;
+  beforeSize: number;
+  totalSize: number;
 };
 
 export const useCommunities = ({ requestSize }: { requestSize: number }) => {
   const { data, error, setSize, size } = useSWRInfinite<
-    ListCommunityResponse | undefined,
+    ListCommunityResponse,
     Error | ApiError
   >(
     (pageIndex, prevPageData) =>
       getKey({ requestSize, pageIndex, prevPageData }),
-    fetcher
+    fetcher,
+    {
+      suspense: true,
+    }
   );
 
   return {
@@ -40,8 +43,8 @@ const getKey = ({
   prevPageData?: ListCommunityResponse | null;
 }) => {
   if (
-    typeof prevPageData?.total_size === "number" &&
-    prevPageData.total_size >= requestSize * pageIndex
+    typeof prevPageData?.totalSize === "number" &&
+    prevPageData.totalSize >= requestSize * pageIndex
   ) {
     return null;
   }
