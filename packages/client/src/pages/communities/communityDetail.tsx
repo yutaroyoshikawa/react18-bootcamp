@@ -4,7 +4,9 @@ import { useParams } from "react-router-dom";
 import { BaseLayout } from "../../features/app/components/BaseLayout";
 import { Button } from "../../features/app/components/Button";
 import { Heading } from "../../features/app/components/Heading";
+import { Icon } from "../../features/app/components/Icon";
 import { Image } from "../../features/app/components/Image";
+import { SquareButton } from "../../features/app/components/SquareButton";
 import { replaceImageSize } from "../../features/app/modules/imageUrlUtils";
 import { useTheme } from "../../features/app/modules/themeHooks";
 import { CommunityDetails } from "../../features/community/components/CommunityDetails";
@@ -145,26 +147,49 @@ const eventListWrapperStyle = css({
 });
 
 const ListCommunitEvent: FC<{ communityId: string }> = ({ communityId }) => {
-  const { data } = useListCommunityEvent({ communityId, requestSize: 5 });
+  const { data, size, setSize } = useListCommunityEvent({
+    communityId,
+    requestSize: 5,
+  });
 
   const events = useMemo(() => {
-    if (!data) {
+    if (!data || !data[size - 1]) {
       return [];
     }
 
-    return data.flatMap(({ events }) =>
-      events.map((event) => ({
-        ...event,
-        communityEvent: {
-          ...event.communityEvent,
-          imageUrl: replaceImageSize({
-            imageUrl: event.communityEvent.imageUrl,
-            width: 696,
-            height: 108,
-          }),
-        },
-      }))
-    );
+    return data[size - 1].events.map((event) => ({
+      ...event,
+      communityEvent: {
+        ...event.communityEvent,
+        imageUrl: replaceImageSize({
+          imageUrl: event.communityEvent.imageUrl,
+          width: 696,
+          height: 108,
+        }),
+      },
+    }));
+  }, [data, size]);
+
+  const disabledPageFunc = useMemo(() => {
+    if (!data || !data[size - 1]) {
+      return {
+        prev: true,
+        next: true,
+      };
+    }
+
+    return {
+      prev: size < 2,
+      next: size * 5 >= data[data.length - 1].totalSize,
+    };
+  }, [data, size]);
+
+  const showPageFunc = useMemo(() => {
+    if (!data) {
+      return false;
+    }
+
+    return data[data.length - 1].totalSize > 5;
   }, [data]);
 
   if (!data) {
@@ -172,13 +197,47 @@ const ListCommunitEvent: FC<{ communityId: string }> = ({ communityId }) => {
   }
 
   return (
-    <ul className={listStyle()}>
-      {events.map(({ communityEvent }) => (
-        <li className={listItem()} key={communityEvent.id}>
-          <CommunityEventSummary communityEvent={communityEvent} />
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className={listStyle()}>
+        {events.map(({ communityEvent }) => (
+          <li className={listItem()} key={communityEvent.id}>
+            <CommunityEventSummary communityEvent={communityEvent} />
+          </li>
+        ))}
+      </ul>
+      {showPageFunc && (
+        <div className={funcWrapperStyle()}>
+          <SquareButton
+            type="button"
+            onClick={() => setSize((prev) => prev - 1)}
+            disabled={disabledPageFunc.prev}
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
+            <Icon icon="arrowLeft" variant="light" size="lg" />
+          </SquareButton>
+          <SquareButton
+            type="button"
+            onClick={() => setSize((prev) => prev + 1)}
+            disabled={disabledPageFunc.next}
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
+            <Icon icon="arrowRight" variant="light" size="lg" />
+          </SquareButton>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -193,4 +252,12 @@ const listStyle = css({
 const listItem = css({
   margin: 0,
   padding: 0,
+});
+
+const funcWrapperStyle = css({
+  maxWidth: "300px",
+  width: "100%",
+  margin: "0 auto",
+  display: "flex",
+  justifyContent: "space-between",
 });
