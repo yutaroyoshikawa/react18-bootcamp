@@ -1,5 +1,6 @@
 import type { Community } from "api-server";
-import type { FC } from "react";
+import type { FormEvent } from "react";
+import { FC, useCallback, useState } from "react";
 import { css, theme } from "../../../lib/style";
 import { Button } from "../../app/components/Button";
 import { Modal, ModalProps } from "../../app/components/Modal";
@@ -34,27 +35,53 @@ const categoryOptions: { label: string; value: Community["category"] | "" }[] =
     },
   ];
 
-export type CreateCommunityFormModalProps = Pick<
-  ModalProps,
-  "isOpen" | "onRequestClose" | "onAfterClose"
->;
+export type CreateCommunityFormModalProps = {
+  onRequestCreateCommunity: (formData: {
+    name: string;
+    details: string;
+    category: Community["category"];
+  }) => void | Promise<void>;
+} & Pick<ModalProps, "isOpen" | "onRequestClose" | "onAfterClose">;
 
 export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
+  onRequestCreateCommunity,
   ...modalProps
 }) => {
+  const [name, setName] = useState("");
+  const [details, setDetails] = useState("");
+  const [category, setCategory] = useState<Community["category"] | "">("");
+
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (!category) {
+        return;
+      }
+
+      await onRequestCreateCommunity({
+        name,
+        details,
+        category,
+      });
+    },
+    [category, details, name, onRequestCreateCommunity]
+  );
+
   return (
     <Modal
       {...modalProps}
       title="新規コミュニティ"
       contentLabel="新規コミュニティ作成フォーム"
     >
-      <form className={formStyle()}>
+      <form className={formStyle()} onSubmit={onSubmit}>
         <ModalBody>
           <div className={inputsWrapperStyle()}>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>コミュニティ名</span>
               <TextInput
                 placeholder="新規コミュニティ名"
+                onChange={(event) => setName(event.target.value)}
                 breakpoint={{
                   size: {
                     lg: "default",
@@ -66,11 +93,26 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>詳細</span>
-              <Textarea rows={6} />
+              <Textarea
+                rows={6}
+                onChange={(event) => setDetails(event.target.value)}
+              />
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>カテゴリ</span>
-              <Selector options={categoryOptions} />
+              <Selector
+                options={categoryOptions}
+                onChange={(event) => {
+                  setCategory(
+                    event.target.value as
+                      | ""
+                      | "anime"
+                      | "geek"
+                      | "gurmand"
+                      | "sports"
+                  );
+                }}
+              />
             </label>
           </div>
         </ModalBody>

@@ -1,3 +1,4 @@
+import { Community } from "api-server";
 import type { FC } from "react";
 import { Suspense, useCallback, useMemo, useState } from "react";
 import { BaseLayout } from "../features/app/components/BaseLayout";
@@ -11,6 +12,7 @@ import { CommunitySummary } from "../features/community/components/CommunitySumm
 import { CommunitySummarySkeleton } from "../features/community/components/CommunitySummarySkeleton";
 import { CreateCommunityFormModal } from "../features/community/components/CreateCommunityFormModal";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
+import { useCreateCommunity } from "../features/community/modules/createCommunityHooks";
 import { useListCommunity } from "../features/community/modules/listCommunityHooks";
 import { usePostJoinCommunity } from "../features/community/modules/postJoinCommunityHooks";
 import { css, theme } from "../lib/style";
@@ -38,6 +40,32 @@ const PageContent: FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState<string>();
   const [theme] = useTheme();
+  const { createCommunity } = useCreateCommunity();
+
+  const requestCreateCommunity = useCallback(
+    async ({
+      name,
+      details,
+      category,
+    }: {
+      name: string;
+      details: string;
+      category: Community["category"];
+    }) => {
+      const res = await createCommunity({
+        name,
+        details,
+        category,
+      });
+
+      if (res instanceof Error) {
+        return;
+      }
+
+      setIsOpenModal(false);
+    },
+    [createCommunity]
+  );
 
   return (
     <>
@@ -91,6 +119,7 @@ const PageContent: FC = () => {
       <CreateCommunityFormModal
         isOpen={isOpenModal}
         onRequestClose={() => setIsOpenModal(false)}
+        onRequestCreateCommunity={requestCreateCommunity}
       />
     </>
   );
