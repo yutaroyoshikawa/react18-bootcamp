@@ -1,4 +1,5 @@
 import { ApiError, Community, CommunityService } from "api-server";
+import { useCallback } from "react";
 import useSWRInfinite from "swr/infinite";
 import { apiClient, handleApiError } from "../../../lib/api";
 
@@ -18,7 +19,7 @@ export const useListCommunity = ({
   requestSize: number;
   keyword?: string;
 }) => {
-  const { data, error, setSize, size } = useSWRInfinite<
+  const { data, error, setSize, size, mutate } = useSWRInfinite<
     ListCommunityResponse,
     Error | ApiError
   >(
@@ -30,12 +31,17 @@ export const useListCommunity = ({
     }
   );
 
+  const fetchListCommunity = useCallback(async () => {
+    return await mutate();
+  }, [mutate]);
+
   return {
     data,
     error,
     loading: !error && !data,
     size,
     setSize,
+    fetchListCommunity,
   };
 };
 

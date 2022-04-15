@@ -18,6 +18,7 @@ const BREAKPOINT_KEY = "layout";
 type CommunitySummaryProps = {
   community: Community;
   isJoined: boolean;
+  onRequestJoin: () => void | Promise<void>;
   breakpoint: {
     [BREAKPOINT_KEY]: BreakPoint<"vertical" | "horizontal">;
   };
@@ -34,6 +35,7 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
   community,
   isJoined,
   breakpoint,
+  onRequestJoin,
 }) => {
   return (
     <article
@@ -93,6 +95,8 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
             </Link>
           ) : (
             <Button
+              type="button"
+              onClick={onRequestJoin}
               variant="primary"
               breakpoint={{
                 size: {

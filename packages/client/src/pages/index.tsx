@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
@@ -12,6 +12,7 @@ import { CommunitySummarySkeleton } from "../features/community/components/Commu
 import { CreateCommunityFormModal } from "../features/community/components/CreateCommunityFormModal";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
 import { useListCommunity } from "../features/community/modules/listCommunityHooks";
+import { usePostJoinCommunity } from "../features/community/modules/postJoinCommunityHooks";
 import { css, theme } from "../lib/style";
 
 export const Home: FC = () => {
@@ -115,10 +116,11 @@ const searchWrapper = css({
 });
 
 const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
-  const { data, size, setSize } = useListCommunity({
+  const { data, size, setSize, fetchListCommunity } = useListCommunity({
     requestSize: 5,
     keyword: keyword ? keyword : undefined,
   });
+  const { joinCommunity } = usePostJoinCommunity();
 
   const communities = useMemo(() => {
     if (!data || !data[size - 1]) {
@@ -160,6 +162,19 @@ const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
     return data[data.length - 1].totalSize > 5;
   }, [data]);
 
+  const requestJoinCommunity = useCallback(
+    async (communityId: string) => {
+      const res = await joinCommunity({ communityId });
+
+      if (res instanceof Error) {
+        return;
+      }
+
+      await fetchListCommunity();
+    },
+    [fetchListCommunity, joinCommunity]
+  );
+
   if (!data) {
     return null;
   }
@@ -171,6 +186,7 @@ const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
           key={community.id}
           community={community}
           isJoined={!!isJoined}
+          onRequestJoin={() => requestJoinCommunity(community.id)}
           breakpoint={{
             layout: {
               lg: "horizontal",
