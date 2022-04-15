@@ -1,4 +1,6 @@
-import type { FC } from "react";
+import { CommunityEvent } from "api-server";
+import type { FC, FormEvent } from "react";
+import { useCallback, useState } from "react";
 import { css, theme } from "../../../lib/style";
 import { Button } from "../../app/components/Button";
 import { DateTimePicker } from "../../app/components/DateTimePicker";
@@ -10,34 +12,73 @@ import { Selector } from "../../app/components/Selector";
 import { Textarea } from "../../app/components/Textarea";
 import { TextInput } from "../../app/components/TextInput";
 
-const categoryOptions: { label: string; value: "" }[] = [
+const categoryOptions: {
+  label: string;
+  value: CommunityEvent["category"] | "";
+}[] = [
   {
     label: "カテゴリを選択",
     value: "",
   },
+  {
+    label: "パーティ",
+    value: "party",
+  },
+  {
+    label: "セミナー",
+    value: "seminar",
+  },
 ];
 
-export type CreateCommunityEventFormModalProps = Pick<
-  ModalProps,
-  "isOpen" | "onRequestClose" | "onAfterClose"
->;
+export type CreateCommunityEventFormModalProps = {
+  onRequestCreateEvent: (formData: {
+    name: string;
+    holdAt: Date;
+    details: string;
+    category: CommunityEvent["category"];
+  }) => void | Promise<void>;
+} & Pick<ModalProps, "isOpen" | "onRequestClose" | "onAfterClose">;
 
 export const CreateCommunityEventFormModal: FC<
   CreateCommunityEventFormModalProps
-> = ({ ...modalProps }) => {
+> = ({ onRequestCreateEvent, ...modalProps }) => {
+  const [name, setName] = useState("");
+  const [holdAt, setHoldAt] = useState(new Date());
+  const [details, setDetails] = useState("");
+  const [category, setCategory] = useState<CommunityEvent["category"] | "">("");
+
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (!category) {
+        return;
+      }
+
+      await onRequestCreateEvent({
+        name,
+        holdAt,
+        details,
+        category,
+      });
+    },
+    [category, details, holdAt, name, onRequestCreateEvent]
+  );
+
   return (
     <Modal
       {...modalProps}
       title="イベントを作成"
       contentLabel="新規イベント作成フォーム"
     >
-      <form className={formStyle()}>
+      <form className={formStyle()} onSubmit={onSubmit}>
         <ModalBody>
           <div className={inputsWrapperStyle()}>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>イベント名</span>
               <TextInput
                 placeholder="新規イベント名"
+                onChange={(event) => setName(event.target.value)}
                 breakpoint={{
                   size: {
                     lg: "default",
@@ -49,15 +90,28 @@ export const CreateCommunityEventFormModal: FC<
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>開催日時</span>
-              <DateTimePicker min={new Date().toString()} />
+              <DateTimePicker
+                min={new Date().toString()}
+                onChange={(event) => setHoldAt(new Date(event.target.value))}
+              />
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>詳細</span>
-              <Textarea rows={6} />
+              <Textarea
+                rows={6}
+                onChange={(event) => setDetails(event.target.value)}
+              />
             </label>
             <label className={labelStyle()}>
               <span className={labelTextStyle()}>カテゴリ</span>
-              <Selector options={categoryOptions} />
+              <Selector
+                options={categoryOptions}
+                onChange={(event) =>
+                  setCategory(
+                    event.target.value as CommunityEvent["category"] | ""
+                  )
+                }
+              />
             </label>
           </div>
         </ModalBody>

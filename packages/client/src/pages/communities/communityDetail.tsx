@@ -1,5 +1,6 @@
+import { CommunityEvent } from "api-server";
 import type { FC } from "react";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { BaseLayout } from "../../features/app/components/BaseLayout";
 import { Button } from "../../features/app/components/Button";
@@ -13,7 +14,11 @@ import { CommunityDetails } from "../../features/community/components/CommunityD
 import { useCommunity } from "../../features/community/modules/communityHooks";
 import { CommunityEventSummary } from "../../features/communityEvent/components/CommunityEventSummary";
 import { CreateCommunityEventFormModal } from "../../features/communityEvent/components/CreateCommunityEventFormModal";
-import { useListCommunityEvent } from "../../features/communityEvent/modules/communityEventsHooks";
+import {
+  useFetchListCommunityEvent,
+  useListCommunityEvent,
+} from "../../features/communityEvent/modules/communityEventsHooks";
+import { useCreateCommunityEvent } from "../../features/communityEvent/modules/createCommunityEventHooks";
 import { css, theme } from "../../lib/style";
 
 export const CommunityDetailPage: FC = () => {
@@ -39,6 +44,8 @@ const CommunityDetailPageContent: FC = () => {
   const { id } = useParams();
   const { data } = useCommunity({ communityId: id ?? "" });
   const [theme] = useTheme();
+  const { createCommunityEvent } = useCreateCommunityEvent();
+  const fetchListCommunityEvent = useFetchListCommunityEvent();
 
   const thumbnailUrl = useMemo(() => {
     if (typeof data?.community.imageUrl === "undefined") {
@@ -51,6 +58,45 @@ const CommunityDetailPageContent: FC = () => {
       height: 230,
     });
   }, [data?.community.imageUrl]);
+
+  const requestCreateEvent = useCallback(
+    async ({
+      name,
+      holdAt,
+      details,
+      category,
+    }: {
+      name: string;
+      holdAt: Date;
+      details: string;
+      category: CommunityEvent["category"];
+    }) => {
+      if (!id) {
+        return;
+      }
+
+      const res = await createCommunityEvent({
+        communityId: id,
+        name,
+        holdAt,
+        details,
+        category,
+      });
+
+      if (res instanceof Error) {
+        return;
+      }
+
+      await fetchListCommunityEvent({
+        communityId: id,
+        requestSize: 5,
+        pageIndex: 1,
+      });
+
+      setIsOpenModal(false);
+    },
+    [createCommunityEvent, fetchListCommunityEvent, id]
+  );
 
   if (!data || !id) {
     return null;
@@ -108,12 +154,13 @@ const CommunityDetailPageContent: FC = () => {
             開催イベント一覧
           </Heading>
           <Suspense fallback={null}>
-            <ListCommunitEvent communityId={id} />
+            <ListCommunityEvent communityId={id} />
           </Suspense>
         </section>
       </div>
       <CreateCommunityEventFormModal
         isOpen={isOpenModal}
+        onRequestCreateEvent={requestCreateEvent}
         onRequestClose={() => setIsOpenModal(false)}
       />
     </>
@@ -146,7 +193,7 @@ const eventListWrapperStyle = css({
   rowGap: theme(({ space }) => space[3]),
 });
 
-const ListCommunitEvent: FC<{ communityId: string }> = ({ communityId }) => {
+const ListCommunityEvent: FC<{ communityId: string }> = ({ communityId }) => {
   const { data, size, setSize } = useListCommunityEvent({
     communityId,
     requestSize: 5,

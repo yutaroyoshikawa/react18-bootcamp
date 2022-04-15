@@ -5,6 +5,8 @@ import {
   CommunityEventService,
   CommunityMember,
 } from "api-server";
+import { useCallback } from "react";
+import { useSWRConfig } from "swr";
 import useSWRInfinite from "swr/infinite";
 import { apiClient, handleApiError } from "../../../lib/api";
 
@@ -46,6 +48,36 @@ export const useListCommunityEvent = ({
     size,
     setSize,
   };
+};
+
+export const useFetchListCommunityEvent = () => {
+  const { mutate } = useSWRConfig();
+
+  const fetchListCommunityEvent = useCallback(
+    async ({
+      communityId,
+      requestSize,
+      pageIndex,
+      prevPageData,
+    }: {
+      communityId: string;
+      requestSize: number;
+      pageIndex: number;
+      prevPageData?: ListCommunityEventResponse;
+    }) => {
+      return await mutate<ListCommunityEventResponse>(
+        getKey({
+          communityId,
+          requestSize,
+          pageIndex,
+          prevPageData,
+        })
+      );
+    },
+    [mutate]
+  );
+
+  return fetchListCommunityEvent;
 };
 
 const getKey = ({

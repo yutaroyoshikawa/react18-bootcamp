@@ -4,6 +4,7 @@ import {
   CommunityMember,
   CommunityService,
 } from "api-server";
+import { useCallback } from "react";
 import useSWR from "swr";
 import { apiClient, handleApiError } from "../../../lib/api";
 
@@ -14,7 +15,7 @@ type CommunityResponse = {
 };
 
 export const useCommunity = ({ communityId }: { communityId: string }) => {
-  const { data, error } = useSWR<CommunityResponse, Error | ApiError>(
+  const { data, error, mutate } = useSWR<CommunityResponse, Error | ApiError>(
     getKey({ communityId }),
     fetcher,
     {
@@ -22,10 +23,15 @@ export const useCommunity = ({ communityId }: { communityId: string }) => {
     }
   );
 
+  const fetchCommunity = useCallback(async () => {
+    return await mutate();
+  }, [mutate]);
+
   return {
     data,
     error,
     loading: !data && !error,
+    fetchCommunity,
   };
 };
 
