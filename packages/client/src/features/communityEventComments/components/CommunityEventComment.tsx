@@ -1,3 +1,7 @@
+import type {
+  CommunityEventComment as Comment,
+  CommunityMember,
+} from "api-server";
 import type { FC } from "react";
 import { useMemo } from "react";
 import { formatDate } from "../../../lib/date";
@@ -5,37 +9,27 @@ import { css, theme } from "../../../lib/style";
 import { UserAvatar } from "../../user/components/UserAvatar";
 
 type CommunityEventCommnetProps = {
-  communityEventComment: {
-    comment: string;
-    user: {
-      name: string;
-      imageUrl: string;
-    };
-    postedAt: number;
-  };
+  communityEventComment: Comment;
+  user: CommunityMember;
 };
 
 export const CommunityEventComment: FC<CommunityEventCommnetProps> = ({
   communityEventComment,
+  user,
 }) => {
   const postedAt = useMemo(() => {
     return formatDate({
-      date: communityEventComment.postedAt,
+      date: communityEventComment.commentAt,
       format: "YYYY/MM/DD HH:mm",
     });
-  }, [communityEventComment.postedAt]);
+  }, [communityEventComment.commentAt]);
 
   return (
     <figure className={containerStyle()}>
-      <UserAvatar
-        avatarUrl={communityEventComment.user.imageUrl}
-        size="small"
-      />
+      <UserAvatar avatarUrl={user.user.iconUrl} size="small" />
       <div className={commentWrapperStyle()}>
-        <p className={commentTextStyle()}>{communityEventComment.comment}</p>
-        <cite className={userNameTextStyle()}>
-          {communityEventComment.user.name}
-        </cite>
+        <p className={commentTextStyle()}>{communityEventComment.body}</p>
+        <cite className={userNameTextStyle()}>{user.user.name}</cite>
         <time className={postedAtTextStyle()}>{postedAt}</time>
       </div>
     </figure>

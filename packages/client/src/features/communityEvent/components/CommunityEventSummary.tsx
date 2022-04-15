@@ -1,26 +1,24 @@
+import type { CommunityEvent } from "api-server";
 import type { FC } from "react";
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { dummuCommunityEventComment } from "../../../../testdata/communityEventComment";
 import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
 import { CommunityEventComment } from "../../communityEventComments/components/CommunityEventComment";
 import { CommunityEventCommentForm } from "../../communityEventComments/components/CommunityEventCommentForm";
+import { useListCommunityEventComment } from "../../communityEventComments/modules/listCommunityEventCommentHooks";
 
 const TRANSITION_TIMEOUT = 300;
 
 type CommunityEventSummaryProps = {
-  communityEvent: {
-    name: string;
-    details: string;
-    imageUrl: string;
-    holdAt: number;
-  };
+  communityId: string;
+  communityEvent: CommunityEvent;
 };
 
 export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
+  communityId,
   communityEvent,
 }) => {
   const [isOpenToggle, setIsOpenToggle] = useState(false);
@@ -77,13 +75,12 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
                 onSubmit={(comment) => console.log(comment)}
               />
               {isOpenToggle && (
-                <ul className={listStyle()}>
-                  <li className={listItemStyle()}>
-                    <CommunityEventComment
-                      communityEventComment={dummuCommunityEventComment()}
-                    />
-                  </li>
-                </ul>
+                <Suspense fallback={null}>
+                  <CommunityEventCommentList
+                    communityId={communityId}
+                    eventId={communityEvent.id}
+                  />
+                </Suspense>
               )}
             </div>
           </CSSTransition>
@@ -155,6 +152,30 @@ const commentsToggleSummaryStyle = css({
   cursor: "pointer",
   padding: `${theme(({ space }) => space[2])} 0`,
 });
+
+const CommunityEventCommentList: FC<{
+  communityId: string;
+  eventId: string;
+}> = ({ communityId, eventId }) => {
+  const { data, loading } = useListCommunityEventComment({
+    communityId,
+    eventId,
+  });
+
+  if (loading || !data) {
+    return null;
+  }
+
+  return (
+    <ul className={listStyle()}>
+      {data.map(({ comment, user }) => (
+        <li key={comment.id} className={listItemStyle()}>
+          <CommunityEventComment communityEventComment={comment} user={user} />
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const listStyle = css({
   listStyle: "none",

@@ -248,7 +248,10 @@ const ListCommunityEvent: FC<{ communityId: string }> = ({ communityId }) => {
       <ul className={listStyle()}>
         {events.map(({ communityEvent }) => (
           <li className={listItem()} key={communityEvent.id}>
-            <CommunityEventSummary communityEvent={communityEvent} />
+            <CommunityEventSummary
+              communityEvent={communityEvent}
+              communityId={communityId}
+            />
           </li>
         ))}
       </ul>
