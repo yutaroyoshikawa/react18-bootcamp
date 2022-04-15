@@ -61,27 +61,17 @@ const getKey = ({
 }) => {
   if (
     typeof prevPageData?.totalSize === "number" &&
-    prevPageData.totalSize >= requestSize * pageIndex
+    requestSize * pageIndex >= prevPageData.totalSize
   ) {
     return null;
   }
 
-  const key = `${CommunityEventService.name}/${CommunityEventService.prototype.listCommunityEvent.name}`;
-
-  if (!prevPageData?.events) {
-    return {
-      key,
-      communityId,
-      requestSize,
-    };
-  }
-
   return {
-    key,
+    key: `${CommunityEventService.name}/${CommunityEventService.prototype.listCommunityEvent.name}`,
     communityId,
     requestSize,
     beginCursor:
-      prevPageData.events[prevPageData.events.length - 1].communityEvent.id,
+      prevPageData?.events[prevPageData.events.length - 1].communityEvent.id,
   };
 };
 

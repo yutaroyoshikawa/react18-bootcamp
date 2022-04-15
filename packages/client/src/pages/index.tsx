@@ -3,6 +3,8 @@ import { Suspense, useMemo, useState } from "react";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
+import { Icon } from "../features/app/components/Icon";
+import { SquareButton } from "../features/app/components/SquareButton";
 import { replaceImageSize } from "../features/app/modules/imageUrlUtils";
 import { useTheme } from "../features/app/modules/themeHooks";
 import { CommunitySummary } from "../features/community/components/CommunitySummary";
@@ -98,6 +100,7 @@ const containerStyle = css({
   maxWidth: "710px",
   display: "grid",
   rowGap: theme(({ space }) => space[4]),
+  margin: "0 auto",
 });
 
 const titleContainer = css({
@@ -112,29 +115,49 @@ const searchWrapper = css({
 });
 
 const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
-  const { data } = useListCommunity({
+  const { data, size, setSize } = useListCommunity({
     requestSize: 5,
     keyword: keyword ? keyword : undefined,
   });
 
   const communities = useMemo(() => {
-    if (!data) {
+    if (!data || !data[size - 1]) {
       return [];
     }
 
-    return data.flatMap(({ communities }) =>
-      communities.map((communityInfo) => ({
-        ...communityInfo,
-        community: {
-          ...communityInfo.community,
-          imageUrl: replaceImageSize({
-            imageUrl: communityInfo.community.imageUrl,
-            width: 130,
-            height: 240,
-          }),
-        },
-      }))
-    );
+    return data[size - 1].communities.map((communityInfo) => ({
+      ...communityInfo,
+      community: {
+        ...communityInfo.community,
+        imageUrl: replaceImageSize({
+          imageUrl: communityInfo.community.imageUrl,
+          width: 130,
+          height: 240,
+        }),
+      },
+    }));
+  }, [data, size]);
+
+  const disabledPageFunc = useMemo(() => {
+    if (!data || !data[size - 1]) {
+      return {
+        prev: true,
+        next: true,
+      };
+    }
+
+    return {
+      prev: size < 2,
+      next: size * 5 >= data[data.length - 1].totalSize,
+    };
+  }, [data, size]);
+
+  const showPageFunc = useMemo(() => {
+    if (!data) {
+      return false;
+    }
+
+    return data[data.length - 1].totalSize > 5;
   }, [data]);
 
   if (!data) {
@@ -157,9 +180,49 @@ const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
           }}
         />
       ))}
+      {showPageFunc && (
+        <div className={funcWrapperStyle()}>
+          <SquareButton
+            type="button"
+            onClick={() => setSize((prev) => prev - 1)}
+            disabled={disabledPageFunc.prev}
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
+            <Icon icon="arrowLeft" variant="light" size="lg" />
+          </SquareButton>
+          <SquareButton
+            type="button"
+            onClick={() => setSize((prev) => prev + 1)}
+            disabled={disabledPageFunc.next}
+            breakpoint={{
+              size: {
+                lg: "default",
+                md: "default",
+                sm: "small",
+              },
+            }}
+          >
+            <Icon icon="arrowRight" variant="light" size="lg" />
+          </SquareButton>
+        </div>
+      )}
     </>
   );
 };
+
+const funcWrapperStyle = css({
+  maxWidth: "300px",
+  width: "100%",
+  margin: "0 auto",
+  display: "flex",
+  justifyContent: "space-between",
+});
 
 const CommunitiListSkeleton: FC = () => {
   return (

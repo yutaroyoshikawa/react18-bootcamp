@@ -52,27 +52,17 @@ const getKey = ({
 }) => {
   if (
     typeof prevPageData?.totalSize === "number" &&
-    prevPageData.totalSize >= requestSize * pageIndex
+    requestSize * pageIndex >= prevPageData.totalSize
   ) {
     return null;
   }
 
-  const key = `${CommunityService.name}/${CommunityService.prototype.listCommunity.name}`;
-
-  if (!prevPageData?.communities) {
-    return {
-      key,
-      requestSize,
-      keyword,
-    };
-  }
-
   return {
-    key,
+    key: `${CommunityService.name}/${CommunityService.prototype.listCommunity.name}`,
     requestSize,
     keyword,
     beginCursor:
-      prevPageData.communities[prevPageData.communities.length - 1].community
+      prevPageData?.communities[prevPageData.communities.length - 1].community
         .id,
   };
 };

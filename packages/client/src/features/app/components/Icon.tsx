@@ -9,6 +9,8 @@ const icons: Record<IconName, FontAwesomeIconProps["icon"]> = {
   sun: ["fas", "sun"],
   search: ["fas", "search"],
   circleXMark: ["fas", "circle-xmark"],
+  arrowLeft: ["fas", "arrow-left"],
+  arrowRight: ["fas", "arrow-right"],
 };
 
 type IconProps = {
