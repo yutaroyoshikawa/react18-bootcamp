@@ -1,4 +1,5 @@
 import type { CSSProperties, FC } from "react";
+import { Link } from "react-router-dom";
 import {
   breakpointAttributes,
   breakpointsStyle,
@@ -31,19 +32,22 @@ export const Navigation: FC<NavigationProps> = ({ variant, breakpoints }) => {
         breakpoints: breakpoints[BREAKPOINT_KEY],
       })}
     >
-      <Heading
-        tag="h1"
-        variant={variant}
-        breakpoint={{
-          size: {
-            lg: "default",
-            md: "default",
-            sm: "small",
-          },
-        }}
-      >
-        コミュニティ
-      </Heading>
+      <Link to="/">
+        <Heading
+          tag="h1"
+          variant={variant}
+          breakpoint={{
+            size: {
+              lg: "default",
+              md: "default",
+              sm: "small",
+            },
+          }}
+        >
+          コミュニティ
+        </Heading>
+      </Link>
+
       <ToggleThemeButton
         onClick={() =>
           setTheme((prev) => (prev === "light" ? "dark" : "light"))
