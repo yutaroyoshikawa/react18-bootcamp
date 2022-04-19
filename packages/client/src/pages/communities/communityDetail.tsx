@@ -120,6 +120,7 @@ const CommunityDetailPageContent: FC = () => {
             {data.community.name}
           </Heading>
           <Button
+            type="button"
             variant="primary"
             breakpoint={{
               size: {

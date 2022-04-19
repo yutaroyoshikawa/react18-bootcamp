@@ -4,7 +4,8 @@ import {
   CommunityEventCommentService,
   CommunityMember,
 } from "api-server";
-import useSWR from "swr";
+import { useCallback } from "react";
+import useSWR, { useSWRConfig } from "swr";
 import { apiClient, handleApiError } from "../../../lib/api";
 
 type ListCommunityEventCommentResponse = {
@@ -31,6 +32,29 @@ export const useListCommunityEventComment = ({
     error,
     loading: !data || !error,
   };
+};
+
+export const useFetchListCommunityEventComment = () => {
+  const { mutate } = useSWRConfig();
+
+  const fetchListCommunityEventComment = useCallback(
+    async ({
+      communityId,
+      eventId,
+    }: {
+      communityId: string;
+      eventId: string;
+    }) => {
+      const result = await mutate<ListCommunityEventCommentResponse>(
+        getKey({ communityId, eventId })
+      );
+
+      return result;
+    },
+    [mutate]
+  );
+
+  return fetchListCommunityEventComment;
 };
 
 const getKey = ({

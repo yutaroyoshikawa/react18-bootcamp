@@ -1,4 +1,4 @@
-import type { FC, FormEvent } from "react";
+import type { FC } from "react";
 import { useCallback, useState } from "react";
 import { css, theme } from "../../../lib/style";
 import { SquareButton } from "../../app/components/SquareButton";
@@ -13,24 +13,22 @@ export const CommunityEventCommentForm: FC<CommunityEventCommentFormProps> = ({
 }) => {
   const [comment, setComment] = useState("");
 
-  const onSubmitHandle = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      onSubmit(comment);
-    },
-    [comment, onSubmit]
-  );
+  const onSubmitHandle = useCallback(() => {
+    // event.preventDefault();
+    onSubmit(comment);
+  }, [comment, onSubmit]);
 
   return (
-    <form onSubmit={onSubmitHandle} className={formStyle()}>
+    <form className={formStyle()}>
       <Textarea
-        onBlur={(event) => setComment(event.target.value)}
+        onChange={(event) => setComment(event.target.value)}
         rows={1}
         placeholder="コメントを追加"
       />
       <SquareButton
         type="submit"
         disabled={false}
+        onClick={onSubmitHandle}
         breakpoint={{
           size: {
             lg: "default",

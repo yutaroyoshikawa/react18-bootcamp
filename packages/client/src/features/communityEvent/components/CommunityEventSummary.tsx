@@ -1,6 +1,6 @@
 import type { CommunityEvent } from "api-server";
 import type { FC } from "react";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "../../../features/app/modules/themeHooks";
 import { formatDate } from "../../../lib/date";
@@ -9,7 +9,11 @@ import { Heading } from "../../app/components/Heading";
 import { Image } from "../../app/components/Image";
 import { CommunityEventComment } from "../../communityEventComments/components/CommunityEventComment";
 import { CommunityEventCommentForm } from "../../communityEventComments/components/CommunityEventCommentForm";
-import { useListCommunityEventComment } from "../../communityEventComments/modules/listCommunityEventCommentHooks";
+import {
+  useFetchListCommunityEventComment,
+  useListCommunityEventComment,
+} from "../../communityEventComments/modules/listCommunityEventCommentHooks";
+import { usePostCommunityEventComment } from "../../communityEventComments/modules/postCommunityEventCommentHooks";
 
 const TRANSITION_TIMEOUT = 300;
 
@@ -22,14 +26,41 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
   communityId,
   communityEvent,
 }) => {
+  const { postCommunityEventComment } = usePostCommunityEventComment();
   const [isOpenToggle, setIsOpenToggle] = useState(false);
   const [showAccordionContents, setShowAccordionContents] = useState(false);
+  const fetchListCommunityEventComment = useFetchListCommunityEventComment();
   const holdAt = useMemo(() => {
     return formatDate({
       date: communityEvent.holdAt,
       format: "YYYY/MM/DD HH:mm",
     });
   }, [communityEvent.holdAt]);
+
+  const requestPostComment = useCallback(
+    async (body: string) => {
+      const res = await postCommunityEventComment({
+        communityId,
+        eventId: communityEvent.id,
+        body,
+      });
+
+      if (res instanceof Error) {
+        return;
+      }
+
+      await fetchListCommunityEventComment({
+        communityId,
+        eventId: communityEvent.id,
+      });
+    },
+    [
+      communityEvent.id,
+      communityId,
+      fetchListCommunityEventComment,
+      postCommunityEventComment,
+    ]
+  );
 
   return (
     <article className={containerStyle()}>
@@ -78,10 +109,11 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
             onEnter={() => setIsOpenToggle(true)}
             onExited={() => setIsOpenToggle(false)}
           >
-            <div className={detailsContentsWrapperStyle()}>
-              <CommunityEventCommentForm
-                onSubmit={(comment) => console.log(comment)}
-              />
+            <div
+              className={detailsContentsWrapperStyle()}
+              data-open={isOpenToggle}
+            >
+              <CommunityEventCommentForm onSubmit={requestPostComment} />
               {isOpenToggle && (
                 <Suspense fallback={null}>
                   <CommunityEventCommentList
@@ -135,10 +167,13 @@ const detailsContentsWrapperStyle = css({
   display: "grid",
   rowGap: theme(({ space }) => space[2]),
   transition: `opacity ${TRANSITION_TIMEOUT}ms ease`,
-  ["&.enter-active, &.enter-done"]: {
+  '&[data-open="true"]': {
     opacity: 1,
   },
-  ["&.exit"]: {
+  "&.enter-active, &.enter-done": {
+    opacity: 1,
+  },
+  "&.exit": {
     opacity: 0,
   },
 });
