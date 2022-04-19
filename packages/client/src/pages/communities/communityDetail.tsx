@@ -14,10 +14,7 @@ import { CommunityDetails } from "../../features/community/components/CommunityD
 import { useCommunity } from "../../features/community/modules/communityHooks";
 import { CommunityEventSummary } from "../../features/communityEvent/components/CommunityEventSummary";
 import { CreateCommunityEventFormModal } from "../../features/communityEvent/components/CreateCommunityEventFormModal";
-import {
-  useFetchListCommunityEvent,
-  useListCommunityEvent,
-} from "../../features/communityEvent/modules/communityEventsHooks";
+import { useListCommunityEvent } from "../../features/communityEvent/modules/communityEventsHooks";
 import { useCreateCommunityEvent } from "../../features/communityEvent/modules/createCommunityEventHooks";
 import { css, theme } from "../../lib/style";
 
@@ -45,7 +42,10 @@ const CommunityDetailPageContent: FC = () => {
   const { data } = useCommunity({ communityId: id ?? "" });
   const [appTheme] = useTheme();
   const { createCommunityEvent } = useCreateCommunityEvent();
-  const fetchListCommunityEvent = useFetchListCommunityEvent();
+  const { fetchListCommunityEvent } = useListCommunityEvent({
+    communityId: id ?? "",
+    requestSize: 5,
+  });
 
   const thumbnailUrl = useMemo(() => {
     if (typeof data?.community.imageUrl === "undefined") {
@@ -87,11 +87,7 @@ const CommunityDetailPageContent: FC = () => {
         return;
       }
 
-      await fetchListCommunityEvent({
-        communityId: id,
-        requestSize: 5,
-        pageIndex: 1,
-      });
+      await fetchListCommunityEvent();
 
       setIsOpenModal(false);
     },

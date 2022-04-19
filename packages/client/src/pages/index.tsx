@@ -41,6 +41,10 @@ const PageContent: FC = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
   const [theme] = useTheme();
   const { createCommunity } = useCreateCommunity();
+  const { fetchListCommunity } = useListCommunity({
+    requestSize: 5,
+    keyword: searchKeyword ? searchKeyword : undefined,
+  });
 
   const requestCreateCommunity = useCallback(
     async ({
@@ -62,9 +66,11 @@ const PageContent: FC = () => {
         return;
       }
 
+      await fetchListCommunity();
+
       setIsOpenModal(false);
     },
-    [createCommunity]
+    [createCommunity, fetchListCommunity]
   );
 
   return (
