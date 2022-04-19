@@ -2,7 +2,6 @@ import type { CommunityEvent } from "api-server";
 import type { FC } from "react";
 import { Suspense, useCallback, useMemo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { useTheme } from "../../../features/app/modules/themeHooks";
 import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
@@ -203,7 +202,6 @@ const CommunityEventCommentList: FC<{
   communityId: string;
   eventId: string;
 }> = ({ communityId, eventId }) => {
-  const [appTheme] = useTheme();
   const { data } = useListCommunityEventComment({
     communityId,
     eventId,
@@ -214,11 +212,7 @@ const CommunityEventCommentList: FC<{
   }
 
   if (data.length < 1) {
-    return (
-      <p className={noDataStyle()} data-theme={appTheme}>
-        コメントはまだありません
-      </p>
-    );
+    return <p className={noDataStyle()}>コメントはまだありません</p>;
   }
 
   return (
@@ -238,9 +232,6 @@ const noDataStyle = css({
   fontSize: theme(({ fontSizes }) => fontSizes[2]),
   margin: "0 auto",
   padding: 0,
-  '&[data-theme="dark"]': {
-    color: theme(({ colors }) => colors.textDark),
-  },
 });
 
 const listStyle = css({
