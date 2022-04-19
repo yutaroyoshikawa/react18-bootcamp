@@ -247,6 +247,8 @@ const listStyle = css({
   listStyle: "none",
   margin: 0,
   padding: 0,
+  maxHeight: "500px",
+  overflowY: "auto",
 });
 
 const listItemStyle = css({
@@ -255,7 +257,7 @@ const listItemStyle = css({
     content: '""',
     display: "block",
     width: "90%",
-    height: "2px",
+    height: "1px",
     margin: `${theme(({ space }) => space[1])} auto`,
     backgroundColor: "#ddd",
   },
