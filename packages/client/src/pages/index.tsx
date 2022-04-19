@@ -120,6 +120,7 @@ const PageContent: FC = () => {
         isOpen={isOpenModal}
         onRequestClose={() => setIsOpenModal(false)}
         onRequestCreateCommunity={requestCreateCommunity}
+        theme={theme}
       />
     </>
   );

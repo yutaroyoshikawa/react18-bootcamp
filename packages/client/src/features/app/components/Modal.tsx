@@ -12,9 +12,15 @@ export type ModalProps = PropsWithChildren<{
   contentLabel: string;
   title: string;
   onAfterClose?: () => void;
+  theme: "light" | "dark";
 }>;
 
-export const Modal: VFC<ModalProps> = ({ children, title, ...modalProps }) => {
+export const Modal: VFC<ModalProps> = ({
+  children,
+  title,
+  theme,
+  ...modalProps
+}) => {
   return (
     <ReactModal
       {...modalProps}
@@ -29,6 +35,9 @@ export const Modal: VFC<ModalProps> = ({ children, title, ...modalProps }) => {
         beforeClose: overlayBeforeCloseStyle(),
       }}
       closeTimeoutMS={TIMEOUT_DURATION}
+      data={{
+        theme,
+      }}
     >
       <div className={titleWrapperStyle()}>
         <div className={closeWrapperStyle()}>
@@ -38,12 +47,12 @@ export const Modal: VFC<ModalProps> = ({ children, title, ...modalProps }) => {
             onClick={modalProps.onRequestClose}
             area-label={`${modalProps.contentLabel}を閉じる`}
           >
-            <Icon icon="circleXMark" variant="light" size="sm" />
+            <Icon icon="circleXMark" variant={theme} size="sm" />
           </button>
         </div>
         <Heading
           tag="h2"
-          variant="light"
+          variant={theme}
           breakpoint={{
             size: {
               lg: "default",
@@ -81,6 +90,9 @@ const modalBaseStyle = css({
   boxSizing: "border-box",
   transition: `transform ${TIMEOUT_DURATION}ms ease`,
   transform: "translateX(100%)",
+  '&[data-theme="dark"]': {
+    backgroundColor: theme(({ colors }) => colors.backgroundSubDark),
+  },
 });
 
 const modalAfterOpenStyle = css({

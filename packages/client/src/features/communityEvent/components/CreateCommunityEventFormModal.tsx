@@ -37,11 +37,12 @@ export type CreateCommunityEventFormModalProps = {
     details: string;
     category: CommunityEvent["category"];
   }) => void | Promise<void>;
+  theme: "light" | "dark";
 } & Pick<ModalProps, "isOpen" | "onRequestClose" | "onAfterClose">;
 
 export const CreateCommunityEventFormModal: FC<
   CreateCommunityEventFormModalProps
-> = ({ onRequestCreateEvent, ...modalProps }) => {
+> = ({ onRequestCreateEvent, theme, ...modalProps }) => {
   const [name, setName] = useState("");
   const [holdAt, setHoldAt] = useState(new Date());
   const [details, setDetails] = useState("");
@@ -70,6 +71,7 @@ export const CreateCommunityEventFormModal: FC<
       {...modalProps}
       title="イベントを作成"
       contentLabel="新規イベント作成フォーム"
+      theme={theme}
     >
       <form className={formStyle()} onSubmit={onSubmit}>
         <ModalBody>

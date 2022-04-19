@@ -41,10 +41,12 @@ export type CreateCommunityFormModalProps = {
     details: string;
     category: Community["category"];
   }) => void | Promise<void>;
+  theme: "light" | "dark";
 } & Pick<ModalProps, "isOpen" | "onRequestClose" | "onAfterClose">;
 
 export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
   onRequestCreateCommunity,
+  theme,
   ...modalProps
 }) => {
   const [name, setName] = useState("");
@@ -73,12 +75,15 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
       {...modalProps}
       title="新規コミュニティ"
       contentLabel="新規コミュニティ作成フォーム"
+      theme={theme}
     >
       <form className={formStyle()} onSubmit={onSubmit}>
         <ModalBody>
           <div className={inputsWrapperStyle()}>
             <label className={labelStyle()}>
-              <span className={labelTextStyle()}>コミュニティ名</span>
+              <span className={labelTextStyle()} data-theme={theme}>
+                コミュニティ名
+              </span>
               <TextInput
                 placeholder="新規コミュニティ名"
                 onChange={(event) => setName(event.target.value)}
@@ -99,7 +104,9 @@ export const CreateCommunityFormModal: FC<CreateCommunityFormModalProps> = ({
               />
             </label>
             <label className={labelStyle()}>
-              <span className={labelTextStyle()}>カテゴリ</span>
+              <span className={labelTextStyle()} data-theme={theme}>
+                カテゴリ
+              </span>
               <Selector
                 options={categoryOptions}
                 onChange={(event) => {
@@ -160,4 +167,7 @@ const labelTextStyle = css({
   color: theme(({ colors }) => colors.text),
   fontFamily: theme(({ fonts }) => fonts.base),
   fontSize: theme(({ fontSizes }) => fontSizes[2]),
+  '&[data-theme="dark"]': {
+    color: theme(({ colors }) => colors.textDark),
+  },
 });

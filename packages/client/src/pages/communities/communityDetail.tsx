@@ -162,6 +162,7 @@ const CommunityDetailPageContent: FC = () => {
         isOpen={isOpenModal}
         onRequestCreateEvent={requestCreateEvent}
         onRequestClose={() => setIsOpenModal(false)}
+        theme={theme}
       />
     </>
   );
