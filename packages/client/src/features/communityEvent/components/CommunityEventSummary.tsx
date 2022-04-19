@@ -2,6 +2,7 @@ import type { CommunityEvent } from "api-server";
 import type { FC } from "react";
 import { Suspense, useMemo, useState } from "react";
 import { CSSTransition } from "react-transition-group";
+import { useTheme } from "../../../features/app/modules/themeHooks";
 import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
 import { Heading } from "../../app/components/Heading";
@@ -152,6 +153,9 @@ const detailsTextStyle = css({
 
 const commentsToggleStyle = css({
   width: "100%",
+  fontFamily: theme(({ fonts }) => fonts.base),
+  fontSize: theme(({ fontSizes }) => fontSizes[2]),
+  color: theme(({ colors }) => colors.title),
 });
 
 const commentsToggleSummaryStyle = css({
@@ -164,13 +168,22 @@ const CommunityEventCommentList: FC<{
   communityId: string;
   eventId: string;
 }> = ({ communityId, eventId }) => {
-  const { data, loading } = useListCommunityEventComment({
+  const [appTheme] = useTheme();
+  const { data } = useListCommunityEventComment({
     communityId,
     eventId,
   });
 
-  if (loading || !data) {
+  if (!data) {
     return null;
+  }
+
+  if (data.length < 1) {
+    return (
+      <p className={noDataStyle()} data-theme={appTheme}>
+        コメントはまだありません
+      </p>
+    );
   }
 
   return (
@@ -184,6 +197,17 @@ const CommunityEventCommentList: FC<{
   );
 };
 
+const noDataStyle = css({
+  color: theme(({ colors }) => colors.text),
+  fontFamily: theme(({ fonts }) => fonts.base),
+  fontSize: theme(({ fontSizes }) => fontSizes[2]),
+  margin: "0 auto",
+  padding: 0,
+  '&[data-theme="dark"]': {
+    color: theme(({ colors }) => colors.textDark),
+  },
+});
+
 const listStyle = css({
   listStyle: "none",
   margin: 0,
@@ -192,4 +216,12 @@ const listStyle = css({
 
 const listItemStyle = css({
   margin: 0,
+  "&:not(:last-child)::after": {
+    content: '""',
+    display: "block",
+    width: "90%",
+    height: "2px",
+    margin: `${theme(({ space }) => space[1])} auto`,
+    backgroundColor: "#ddd",
+  },
 });

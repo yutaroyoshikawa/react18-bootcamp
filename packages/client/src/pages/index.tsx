@@ -151,6 +151,7 @@ const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
     requestSize: 5,
     keyword: keyword ? keyword : undefined,
   });
+  const [appTheme] = useTheme();
   const { joinCommunity } = usePostJoinCommunity();
 
   const communities = useMemo(() => {
@@ -208,6 +209,14 @@ const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {
 
   if (!data) {
     return null;
+  }
+
+  if (communities.length < 1) {
+    return (
+      <p className={noDataStyle()} data-theme={appTheme}>
+        コミュニティが見つかりませんでした
+      </p>
+    );
   }
 
   return (
@@ -269,6 +278,17 @@ const funcWrapperStyle = css({
   margin: "0 auto",
   display: "flex",
   justifyContent: "space-between",
+});
+
+const noDataStyle = css({
+  color: theme(({ colors }) => colors.text),
+  fontFamily: theme(({ fonts }) => fonts.base),
+  fontSize: theme(({ fontSizes }) => fontSizes[2]),
+  margin: "0 auto",
+  padding: 0,
+  '&[data-theme="dark"]': {
+    color: theme(({ colors }) => colors.textDark),
+  },
 });
 
 const CommunitiListSkeleton: FC = () => {

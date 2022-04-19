@@ -46,9 +46,11 @@ const containerStyle = css({
 
 const commentWrapperStyle = css({
   display: "grid",
+  gridTemplateColumns: "1fr auto",
   gridTemplateAreas: `
     "comment comment"
     "name posted-at"`,
+  justifyContent: "space-between",
   gap: theme(({ space }) => space[1]),
 });
 

@@ -17,16 +17,13 @@ export const Image: VFC<ImageProps> = ({ scale, ...imageProps }) => {
   }, []);
 
   return (
-    <span
-      className={imageWrapperStyle()}
-      onLoad={onLoad}
-      data-loadend={loadend}
-    >
+    <span className={imageWrapperStyle()} data-loadend={loadend}>
       <img
         {...imageProps}
         className={imageStyle()}
         data-scale={scale}
         data-loadend={loadend}
+        onLoad={onLoad}
       />
     </span>
   );

@@ -43,7 +43,7 @@ const CommunityDetailPageContent: FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { id } = useParams();
   const { data } = useCommunity({ communityId: id ?? "" });
-  const [theme] = useTheme();
+  const [appTheme] = useTheme();
   const { createCommunityEvent } = useCreateCommunityEvent();
   const fetchListCommunityEvent = useFetchListCommunityEvent();
 
@@ -108,7 +108,7 @@ const CommunityDetailPageContent: FC = () => {
         <section className={detailsHeaderStyle()}>
           <Heading
             tag="h1"
-            variant={theme === "light" ? "light" : "dark"}
+            variant={appTheme}
             breakpoint={{
               size: {
                 lg: "default",
@@ -148,7 +148,7 @@ const CommunityDetailPageContent: FC = () => {
         <section className={eventListWrapperStyle()}>
           <Heading
             tag="h2"
-            variant={theme === "light" ? "light" : "dark"}
+            variant={appTheme}
             breakpoint={{
               size: {
                 lg: "default",
@@ -168,7 +168,7 @@ const CommunityDetailPageContent: FC = () => {
         isOpen={isOpenModal}
         onRequestCreateEvent={requestCreateEvent}
         onRequestClose={() => setIsOpenModal(false)}
-        theme={theme}
+        theme={appTheme}
       />
     </>
   );
@@ -202,6 +202,7 @@ const eventListWrapperStyle = css({
 });
 
 const ListCommunityEvent: FC<{ communityId: string }> = ({ communityId }) => {
+  const [appTheme] = useTheme();
   const { data, size, setSize } = useListCommunityEvent({
     communityId,
     requestSize: 5,
@@ -249,6 +250,14 @@ const ListCommunityEvent: FC<{ communityId: string }> = ({ communityId }) => {
 
   if (!data) {
     return null;
+  }
+
+  if (events.length < 1) {
+    return (
+      <p className={noDataStyle()} data-theme={appTheme}>
+        イベントはまだありません
+      </p>
+    );
   }
 
   return (
@@ -310,6 +319,17 @@ const listStyle = css({
 const listItem = css({
   margin: 0,
   padding: 0,
+});
+
+const noDataStyle = css({
+  color: theme(({ colors }) => colors.text),
+  fontFamily: theme(({ fonts }) => fonts.base),
+  fontSize: theme(({ fontSizes }) => fontSizes[2]),
+  margin: "0 auto",
+  padding: 0,
+  '&[data-theme="dark"]': {
+    color: theme(({ colors }) => colors.textDark),
+  },
 });
 
 const funcWrapperStyle = css({
