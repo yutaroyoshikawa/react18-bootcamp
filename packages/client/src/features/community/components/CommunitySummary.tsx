@@ -51,6 +51,7 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
           alt={community.name}
           width={130}
           height={240}
+          scale="cover"
         />
       </figure>
       <div

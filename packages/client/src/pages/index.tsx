@@ -143,6 +143,7 @@ const titleContainer = css({
 const searchWrapper = css({
   position: "sticky",
   top: theme(({ space }) => space[4]),
+  zIndex: 2,
 });
 
 const CommunityList: FC<{ keyword?: string }> = ({ keyword }) => {

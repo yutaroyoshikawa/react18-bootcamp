@@ -33,7 +33,14 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
   return (
     <article className={containerStyle()}>
       <figure className={sumbnailWrapperStyle()}>
-        <Image src={communityEvent.imageUrl} alt="" width={696} height={108} />
+        <Image
+          src={communityEvent.imageUrl}
+          alt=""
+          width={696}
+          height={108}
+          loading="eager"
+          scale="cover"
+        />
       </figure>
       <div className={infoWrapperStyle()}>
         <div>

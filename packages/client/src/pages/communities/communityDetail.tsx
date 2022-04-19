@@ -134,7 +134,13 @@ const CommunityDetailPageContent: FC = () => {
           </Button>
         </section>
         <figure className={sumbnailWrapperStyle()}>
-          <Image src={thumbnailUrl} alt="" width={696} height={230} />
+          <Image
+            src={thumbnailUrl}
+            alt=""
+            width={696}
+            height={230}
+            scale="cover"
+          />
         </figure>
         <section>
           <CommunityDetails community={data.community} />
@@ -184,6 +190,7 @@ const detailsHeaderStyle = css({
 });
 
 const sumbnailWrapperStyle = css({
+  height: "230px",
   margin: 0,
   borderRadius: theme(({ radii }) => radii.radius1),
   overflow: "hidden",

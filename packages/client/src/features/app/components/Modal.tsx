@@ -34,6 +34,7 @@ export const Modal: VFC<ModalProps> = ({
         afterOpen: overlayAfterOpenStyle(),
         beforeClose: overlayBeforeCloseStyle(),
       }}
+      portalClassName={portalStyle()}
       closeTimeoutMS={TIMEOUT_DURATION}
       data={{
         theme,
@@ -77,6 +78,7 @@ const modalBaseStyle = css({
   gridTemplateRows: "auto minmax(0, 1fr)",
   rowGap: theme(({ space }) => space[1]),
   position: "fixed",
+  zIndex: 1,
   top: 0,
   right: 0,
   backgroundColor: theme(({ colors }) => colors.backgroundSub),
@@ -120,6 +122,11 @@ const overlayAfterOpenStyle = css({
 
 const overlayBeforeCloseStyle = css({
   opacity: 0,
+});
+
+const portalStyle = css({
+  position: "relative",
+  zIndex: 999,
 });
 
 const closeWrapperStyle = css({
