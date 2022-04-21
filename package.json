@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "storybook:client": "npm run storybook --workspace=client",
+    "ladle:client": "npm run ladle --workspace=client",
     "dev:client": "npm run dev --workspace=client",
     "build:client": "npm run dev --workspace=client",
     "build:api-client": "npm run build --workspace=api-server",

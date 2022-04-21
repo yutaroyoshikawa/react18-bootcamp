@@ -10,8 +10,8 @@
     "typecheck": "tsc",
     "lint": "eslint --ext ts,tsx,js .",
     "format": "eslint --fix --ext ts,tsx,js .",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "ladle": "ladle serve",
+    "build-ladle": "ladle build",
     "test": "vitest --config ./vitest.config.ts",
     "coverage": "vitest run --coverage",
     "setup:env": "cp ./.env.example ./.env.$APP_ENV"
