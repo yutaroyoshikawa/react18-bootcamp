@@ -52,6 +52,7 @@ export const CommunitySummary: FC<CommunitySummaryProps> = ({
           width={130}
           height={240}
           scale="cover"
+          loading="lazy"
         />
       </figure>
       <div

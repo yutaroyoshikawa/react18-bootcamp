@@ -1,17 +1,13 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
 import { Image } from "./Image";
 
-const meta: ComponentMeta<typeof Image> = {
-  component: Image,
+const args = {
+  src: "https://picsum.photos/200/300",
+  alt: "ダミー画像",
+  width: 200,
+  height: 300,
+  scale: "cover" as const,
 };
 
-export default meta;
-
-export const Base: ComponentStoryObj<typeof Image> = {
-  args: {
-    src: "https://picsum.photos/200/300",
-    alt: "ダミー画像",
-    width: 200,
-    height: 300,
-  },
+export const Base = () => {
+  return <Image {...args} />;
 };

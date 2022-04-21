@@ -1,30 +1,19 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
-import type { FC } from "react";
+import type { Story } from "@ladle/react";
 import type { HeadingProps } from "./Heading";
 import { Heading } from "./Heading";
 
-const meta: ComponentMeta<typeof Heading> = {
-  component: Heading,
-};
-
-export default meta;
-
-const Component: FC<HeadingProps> = (args) => {
+const Component: Story<HeadingProps> = (args) => {
   return <Heading {...args}>タイトル</Heading>;
 };
 
-export const h1: ComponentStoryObj<typeof Heading> = {
-  render: (args) => <Component {...args} />,
-  args: {
-    tag: "h1",
-    variant: "light",
-  },
+export const h1 = Component.bind({});
+h1.args = {
+  tag: "h1",
+  variant: "light",
 };
 
-export const h2: ComponentStoryObj<typeof Heading> = {
-  render: (args) => <Component {...args} />,
-  args: {
-    tag: "h2",
-    variant: "light",
-  },
+export const h2 = Component.bind({});
+h2.args = {
+  tag: "h2",
+  variant: "light",
 };

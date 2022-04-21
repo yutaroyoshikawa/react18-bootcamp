@@ -1,18 +1,11 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
-import type { FC } from "react";
+import type { Story } from "@ladle/react";
 import { useState } from "react";
 import type { ModalProps } from "./Modal";
 import { Modal } from "./Modal";
 import { ModalBody } from "./ModalBody";
 import { ModalFooter } from "./ModalFooter";
 
-const meta: ComponentMeta<typeof Modal> = {
-  component: Modal,
-};
-
-export default meta;
-
-const Component: FC<ModalProps> = (args) => {
+const Component: Story<ModalProps> = (args) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -30,10 +23,8 @@ const Component: FC<ModalProps> = (args) => {
   );
 };
 
-export const Base: ComponentStoryObj<typeof Modal> = {
-  render: (args) => <Component {...args} />,
-  args: {
-    contentLabel: "テスト",
-    title: "ダミータイトル",
-  },
+export const Base = Component.bind({});
+Base.args = {
+  contentLabel: "テスト",
+  title: "ダミータイトル",
 };

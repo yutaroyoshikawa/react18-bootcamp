@@ -1,15 +1,12 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
 import { dummuCommunityEventComment } from "../../../../testdata/communityEventComment";
+import { dummyCommunityMember } from "../../../../testdata/communityMember";
 import { CommunityEventComment } from "./CommunityEventComment";
 
-const meta: ComponentMeta<typeof CommunityEventComment> = {
-  component: CommunityEventComment,
-};
-
-export default meta;
-
-export const Base: ComponentStoryObj<typeof CommunityEventComment> = {
-  args: {
-    communityEventComment: dummuCommunityEventComment(),
-  },
+export const Base = () => {
+  return (
+    <CommunityEventComment
+      communityEventComment={dummuCommunityEventComment()}
+      user={dummyCommunityMember()}
+    />
+  );
 };

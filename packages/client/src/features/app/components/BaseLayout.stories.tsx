@@ -1,15 +1,8 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
-import type { FC } from "react";
+import type { Story } from "@ladle/react";
 import type { BaseLayoutProps } from "./BaseLayout";
 import { BaseLayout } from "./BaseLayout";
 
-const meta: ComponentMeta<typeof BaseLayout> = {
-  component: BaseLayout,
-};
-
-export default meta;
-
-const Component: FC<BaseLayoutProps> = (args) => {
+const Component: Story<BaseLayoutProps> = (args) => {
   return (
     <BaseLayout {...args}>
       <div>コンテンツ</div>
@@ -17,15 +10,13 @@ const Component: FC<BaseLayoutProps> = (args) => {
   );
 };
 
-export const Base: ComponentStoryObj<typeof BaseLayout> = {
-  render: (args) => <Component {...args} />,
-  args: {
-    breakpoints: {
-      layout: {
-        lg: "horizontal",
-        md: "vertical",
-        sm: "vertical",
-      },
+export const Base = Component.bind({});
+Base.args = {
+  breakpoints: {
+    layout: {
+      lg: "horizontal",
+      md: "vertical",
+      sm: "vertical",
     },
   },
 };

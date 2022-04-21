@@ -137,6 +137,7 @@ const CommunityDetailPageContent: FC = () => {
             width={696}
             height={230}
             scale="cover"
+            loading="lazy"
           />
         </figure>
         <section>

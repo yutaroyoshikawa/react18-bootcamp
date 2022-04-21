@@ -1,10 +1,11 @@
-export const dummuCommunityEventComment = () => {
+import type { CommunityEventComment } from "api-server";
+
+export const dummuCommunityEventComment = (): CommunityEventComment => {
   return {
-    comment: "インドカレーおいしい",
-    user: {
-      name: "ダミーユーザー",
-      imageUrl: "https://picsum.photos/100/100",
-    },
-    postedAt: new Date().getTime(),
+    body: "インドカレーおいしい",
+    eventId: "dummy-event-id",
+    id: "dummy-id",
+    commentedMemberId: "dummy-commented-member-id",
+    commentAt: new Date().getTime(),
   };
 };

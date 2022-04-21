@@ -1,6 +1,7 @@
 import { Community } from "api-server";
 import type { FC } from "react";
 import { Suspense, useCallback, useMemo, useState } from "react";
+import { Helmet } from "react-helmet";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
@@ -20,7 +21,9 @@ import { css, theme } from "../lib/style";
 export const Home: FC = () => {
   return (
     <>
-      {/* <Helmet title="トップページ" /> */}
+      <Helmet>
+        <title>トップページ</title>
+      </Helmet>
       <BaseLayout
         breakpoints={{
           layout: {
@@ -30,7 +33,9 @@ export const Home: FC = () => {
           },
         }}
       >
-        <PageContent />
+        <Suspense fallback={null}>
+          <PageContent />
+        </Suspense>
       </BaseLayout>
     </>
   );

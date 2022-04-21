@@ -26,6 +26,8 @@ export const UserAvatar: FC<UserAvatarProps> = ({ avatarUrl, size }) => {
         alt=""
         width={AVATAR_SIZE[size]}
         height={AVATAR_SIZE[size]}
+        scale="cover"
+        loading="lazy"
       />
     </figure>
   );

@@ -78,8 +78,6 @@ const fetcher = async ({
   beginCursor,
   keyword,
 }: NonNullable<ReturnType<typeof getKey>>) => {
-  console.log(requestSize);
-
   const result = await apiClient.community
     .listCommunity({
       requestSize,

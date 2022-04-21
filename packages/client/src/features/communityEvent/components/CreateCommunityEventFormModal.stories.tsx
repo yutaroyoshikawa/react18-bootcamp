@@ -1,16 +1,9 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
-import type { FC } from "react";
+import type { Story } from "@ladle/react";
 import { useState } from "react";
 import type { CreateCommunityEventFormModalProps } from "./CreateCommunityEventFormModal";
 import { CreateCommunityEventFormModal } from "./CreateCommunityEventFormModal";
 
-const meta: ComponentMeta<typeof CreateCommunityEventFormModal> = {
-  component: CreateCommunityEventFormModal,
-};
-
-export default meta;
-
-const Component: FC<CreateCommunityEventFormModalProps> = (args) => {
+const Component: Story<CreateCommunityEventFormModalProps> = (args) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -25,6 +18,4 @@ const Component: FC<CreateCommunityEventFormModalProps> = (args) => {
   );
 };
 
-export const Base: ComponentStoryObj<typeof CreateCommunityEventFormModal> = {
-  render: (args) => <Component {...args} />,
-};
+export const Base = Component.bind({});
