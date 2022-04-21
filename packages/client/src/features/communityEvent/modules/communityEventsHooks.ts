@@ -24,9 +24,11 @@ type ListCommunityEventResponse = {
 export const useListCommunityEvent = ({
   communityId,
   requestSize,
+  suspense,
 }: {
   communityId: string;
   requestSize: number;
+  suspense: boolean;
 }) => {
   const { data, error, setSize, size, mutate } = useSWRInfinite<
     ListCommunityEventResponse,
@@ -36,7 +38,7 @@ export const useListCommunityEvent = ({
       getKey({ communityId, requestSize, pageIndex, prevPageData }),
     fetcher,
     {
-      suspense: true,
+      suspense,
     }
   );
 

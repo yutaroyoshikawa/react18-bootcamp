@@ -1,6 +1,7 @@
 import { CommunityEvent } from "api-server";
 import type { FC } from "react";
 import { Suspense, useCallback, useMemo, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { BaseLayout } from "../../features/app/components/BaseLayout";
 import { Button } from "../../features/app/components/Button";
@@ -20,19 +21,21 @@ import { css, theme } from "../../lib/style";
 
 export const CommunityDetailPage: FC = () => {
   return (
-    <BaseLayout
-      breakpoints={{
-        layout: {
-          lg: "horizontal",
-          md: "vertical",
-          sm: "vertical",
-        },
-      }}
-    >
-      <Suspense fallback={null}>
-        <CommunityDetailPageContent />
-      </Suspense>
-    </BaseLayout>
+    <>
+      <BaseLayout
+        breakpoints={{
+          layout: {
+            lg: "horizontal",
+            md: "vertical",
+            sm: "vertical",
+          },
+        }}
+      >
+        <Suspense fallback={null}>
+          <CommunityDetailPageContent />
+        </Suspense>
+      </BaseLayout>
+    </>
   );
 };
 
@@ -45,6 +48,7 @@ const CommunityDetailPageContent: FC = () => {
   const { fetchListCommunityEvent } = useListCommunityEvent({
     communityId: id ?? "",
     requestSize: 5,
+    suspense: false,
   });
 
   const thumbnailUrl = useMemo(() => {
@@ -100,6 +104,9 @@ const CommunityDetailPageContent: FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{data.community.name}</title>
+      </Helmet>
       <div className={containerStyle()}>
         <section className={detailsHeaderStyle()}>
           <Heading
@@ -204,6 +211,7 @@ const ListCommunityEvent: FC<{ communityId: string }> = ({ communityId }) => {
   const { data, size, setSize } = useListCommunityEvent({
     communityId,
     requestSize: 5,
+    suspense: true,
   });
 
   const events = useMemo(() => {

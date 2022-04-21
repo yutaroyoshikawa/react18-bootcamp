@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useMemo } from "react";
 import type { Store } from "../../../lib/store";
 import { setState, useStore } from "../../../lib/store";
 import { baseTheme, darkTheme } from "../../../lib/style";
@@ -22,12 +22,9 @@ export const useTheme = () => {
 export const useThemeClass = () => {
   const [theme] = useTheme();
 
-  useEffect(() => {
-    if (typeof document === "undefined") {
-      return;
-    }
-
-    document.body.classList.remove(theme === "light" ? darkTheme : baseTheme);
-    document.body.classList.add(theme === "light" ? baseTheme : darkTheme);
+  const className = useMemo(() => {
+    return theme === "light" ? baseTheme : darkTheme;
   }, [theme]);
+
+  return className;
 };

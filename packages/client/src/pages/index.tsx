@@ -1,7 +1,7 @@
 import { Community } from "api-server";
 import type { FC } from "react";
 import { Suspense, useCallback, useMemo, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { BaseLayout } from "../features/app/components/BaseLayout";
 import { Button } from "../features/app/components/Button";
 import { Heading } from "../features/app/components/Heading";
