@@ -57,6 +57,7 @@ npm run start_release
 ```
 
 上記のコマンドで http://localhost:3000 に API サーバーが立ち上がります。
+なお http://localhost:3000/api-docs で OpenAPI の API 定義を確認することができます。
 
 API のスキーマは openapi.yaml に定義されており、スキーマ定義からクライアント向けのコードを ES Modules として生成することができます。
 クライアント向けのコードを生成するには下記の手順に従ってください。
