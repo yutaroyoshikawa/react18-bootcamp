@@ -1,6 +1,5 @@
 import { ApiError, CommunityEvent } from "api-server";
-import { useCallback, useState, useTransition } from "react";
-import { apiClient, handleApiError } from "../../../lib/api";
+import { useCallback, useState } from "react";
 
 type CreateCommunityEventState =
   | {
@@ -26,8 +25,7 @@ const initialState: CreateCommunityEventState = {
 };
 
 export const useCreateCommunityEvent = () => {
-  const [state, setState] = useState<CreateCommunityEventState>(initialState);
-  const [isPending, startTransition] = useTransition();
+  const [state] = useState<CreateCommunityEventState>(initialState);
 
   const createCommunityEvent = useCallback(
     async ({
@@ -43,44 +41,7 @@ export const useCreateCommunityEvent = () => {
       holdAt: Date;
       category: CommunityEvent["category"];
     }) => {
-      startTransition(() => {
-        setState((prev) => ({
-          ...prev,
-          status: "loading",
-        }));
-      });
-
-      const res = await apiClient.communityEvent
-        .createCommunityEvent({
-          communityId,
-          requestBody: {
-            name,
-            details,
-            holdAt: holdAt.getTime(),
-            category,
-          },
-        })
-        .catch(handleApiError);
-
-      if (res instanceof Error) {
-        startTransition(() => {
-          setState({
-            status: "failed",
-            error: res,
-          });
-        });
-
-        return res;
-      }
-
-      startTransition(() => {
-        setState({
-          status: "success",
-          error: undefined,
-        });
-      });
-
-      return res;
+      return Promise.resolve();
     },
     []
   );
@@ -88,6 +49,5 @@ export const useCreateCommunityEvent = () => {
   return {
     state,
     createCommunityEvent,
-    isPending,
   };
 };
