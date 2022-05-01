@@ -41,7 +41,7 @@ export const useCreateCommunityEvent = () => {
       holdAt: Date;
       category: CommunityEvent["category"];
     }) => {
-      return Promise.resolve();
+      return Promise.resolve(); // TODO: API 通信処理実装
     },
     []
   );
