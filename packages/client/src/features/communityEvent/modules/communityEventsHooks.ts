@@ -56,6 +56,33 @@ export const useListCommunityEvent = ({
   };
 };
 
+export const useFetchListCommunityEvent = ({
+  communityId,
+  requestSize,
+}: {
+  communityId: string;
+  requestSize: number;
+}) => {
+  const { mutate } = useSWRInfinite<
+    ListCommunityEventResponse,
+    Error | ApiError
+  >(
+    (pageIndex, prevPageData) =>
+      getKey({ communityId, requestSize, pageIndex, prevPageData }),
+    fetcher,
+    {
+      suspense: false,
+      revalidateAll: true,
+    }
+  );
+
+  const fetchListCommunityEvent = useCallback(async () => {
+    return await mutate();
+  }, [mutate]);
+
+  return fetchListCommunityEvent;
+};
+
 const getKey = ({
   communityId,
   requestSize,

@@ -1,4 +1,4 @@
-import type { GlobalProvider } from "@ladle/react";
+import type { FC, ReactNode } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { MemoryRouter } from "react-router-dom";
 import { useThemeClass } from "../src/features/app/modules/themeHooks";
@@ -8,7 +8,7 @@ import { globalStyles } from "../src/lib/style";
 globalStyles();
 enableIcon();
 
-export const Provider: GlobalProvider = ({ children }) => {
+export const Provider: FC<{ children: ReactNode }> = ({ children }) => {
   const className = useThemeClass();
 
   return (

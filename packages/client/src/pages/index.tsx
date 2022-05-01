@@ -14,7 +14,10 @@ import { CommunitySummarySkeleton } from "../features/community/components/Commu
 import { CreateCommunityFormModal } from "../features/community/components/CreateCommunityFormModal";
 import { SearchCommunityForm } from "../features/community/components/SearchCommunityForm";
 import { useCreateCommunity } from "../features/community/modules/createCommunityHooks";
-import { useListCommunity } from "../features/community/modules/listCommunityHooks";
+import {
+  useFetchListCommunity,
+  useListCommunity,
+} from "../features/community/modules/listCommunityHooks";
 import { usePostJoinCommunity } from "../features/community/modules/postJoinCommunityHooks";
 import { css, theme } from "../lib/style";
 
@@ -33,9 +36,7 @@ export const Home: FC = () => {
           },
         }}
       >
-        <Suspense fallback={null}>
-          <PageContent />
-        </Suspense>
+        <PageContent />
       </BaseLayout>
     </>
   );
@@ -46,7 +47,7 @@ const PageContent: FC = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>();
   const [theme] = useTheme();
   const { createCommunity } = useCreateCommunity();
-  const { fetchListCommunity } = useListCommunity({
+  const fetchListCommunity = useFetchListCommunity({
     requestSize: 5,
     keyword: searchKeyword ? searchKeyword : undefined,
   });

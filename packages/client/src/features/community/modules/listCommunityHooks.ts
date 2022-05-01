@@ -45,6 +45,30 @@ export const useListCommunity = ({
   };
 };
 
+export const useFetchListCommunity = ({
+  requestSize,
+  keyword,
+}: {
+  requestSize: number;
+  keyword?: string;
+}) => {
+  const { mutate } = useSWRInfinite<ListCommunityResponse, Error | ApiError>(
+    (pageIndex, prevPageData) =>
+      getKey({ requestSize, pageIndex, prevPageData, keyword }),
+    fetcher,
+    {
+      suspense: false,
+      revalidateAll: true,
+    }
+  );
+
+  const fetchListCommunity = useCallback(async () => {
+    return await mutate();
+  }, [mutate]);
+
+  return fetchListCommunity;
+};
+
 const getKey = ({
   requestSize,
   pageIndex,

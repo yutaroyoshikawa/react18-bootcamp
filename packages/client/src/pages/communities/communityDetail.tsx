@@ -15,7 +15,10 @@ import { CommunityDetails } from "../../features/community/components/CommunityD
 import { useCommunity } from "../../features/community/modules/communityHooks";
 import { CommunityEventSummary } from "../../features/communityEvent/components/CommunityEventSummary";
 import { CreateCommunityEventFormModal } from "../../features/communityEvent/components/CreateCommunityEventFormModal";
-import { useListCommunityEvent } from "../../features/communityEvent/modules/communityEventsHooks";
+import {
+  useFetchListCommunityEvent,
+  useListCommunityEvent,
+} from "../../features/communityEvent/modules/communityEventsHooks";
 import { useCreateCommunityEvent } from "../../features/communityEvent/modules/createCommunityEventHooks";
 import { css, theme } from "../../lib/style";
 
@@ -45,10 +48,9 @@ const CommunityDetailPageContent: FC = () => {
   const { data } = useCommunity({ communityId: id ?? "" });
   const [appTheme] = useTheme();
   const { createCommunityEvent } = useCreateCommunityEvent();
-  const { fetchListCommunityEvent } = useListCommunityEvent({
+  const fetchListCommunityEvent = useFetchListCommunityEvent({
     communityId: id ?? "",
     requestSize: 5,
-    suspense: false,
   });
 
   const thumbnailUrl = useMemo(() => {
