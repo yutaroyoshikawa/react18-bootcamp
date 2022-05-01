@@ -25,16 +25,16 @@ export const Modal: VFC<ModalProps> = ({
     <ReactModal
       {...modalProps}
       className={{
-        base: modalBaseStyle(),
-        afterOpen: modalAfterOpenStyle(),
-        beforeClose: modalBeforeCloseStyle(),
+        base: "modalBase",
+        afterOpen: "modalAfterOpen",
+        beforeClose: "modalBeforeClose",
       }}
       overlayClassName={{
-        base: overlayBaseStyle(),
-        afterOpen: overlayAfterOpenStyle(),
-        beforeClose: overlayBeforeCloseStyle(),
+        base: "modalOverlayBase",
+        afterOpen: "modalOverlayAfterOpen",
+        beforeClose: "modalOverlayBeforeClose",
       }}
-      portalClassName={portalStyle()}
+      portalClassName={"modalPortal"}
       closeTimeoutMS={TIMEOUT_DURATION}
       data={{
         theme,
@@ -69,65 +69,6 @@ export const Modal: VFC<ModalProps> = ({
     </ReactModal>
   );
 };
-
-const modalBaseStyle = css({
-  width: "100%",
-  maxWidth: "800px",
-  height: "100%",
-  display: "grid",
-  gridTemplateRows: "auto minmax(0, 1fr)",
-  rowGap: theme(({ space }) => space[1]),
-  position: "fixed",
-  zIndex: 1,
-  top: 0,
-  right: 0,
-  backgroundColor: theme(({ colors }) => colors.backgroundSub),
-  borderRadius: `${theme(({ radii }) => radii.radius1)} 0 0 ${theme(
-    ({ radii }) => radii.radius1
-  )}`,
-  boxShadow: theme(({ shadows }) => shadows.elevationMid),
-  padding: `${theme(({ space }) => space[4])} ${theme(
-    ({ space }) => space[4]
-  )}`,
-  boxSizing: "border-box",
-  transition: `transform ${TIMEOUT_DURATION}ms ease`,
-  transform: "translateX(100%)",
-  '&[data-theme="dark"]': {
-    backgroundColor: theme(({ colors }) => colors.backgroundSubDark),
-  },
-});
-
-const modalAfterOpenStyle = css({
-  transform: "translateX(0)",
-});
-
-const modalBeforeCloseStyle = css({
-  transform: "translateX(100%)",
-});
-
-const overlayBaseStyle = css({
-  width: "100%",
-  height: "100%",
-  backgroundColor: "rgba(0, 0, 0, 0.4)",
-  position: "fixed",
-  top: 0,
-  left: 0,
-  opacity: 0,
-  transition: `opacity ${TIMEOUT_DURATION}ms ease`,
-});
-
-const overlayAfterOpenStyle = css({
-  opacity: 1,
-});
-
-const overlayBeforeCloseStyle = css({
-  opacity: 0,
-});
-
-const portalStyle = css({
-  position: "relative",
-  zIndex: 999,
-});
 
 const closeWrapperStyle = css({
   position: "fixed",

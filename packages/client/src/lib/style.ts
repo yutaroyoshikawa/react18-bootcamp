@@ -242,4 +242,56 @@ export const globalStyles = globalCss({
   body: {
     background: theme(({ colors }) => colors.background),
   },
+  ".modalBase": {
+    width: "100%",
+    maxWidth: "800px",
+    height: "100%",
+    display: "grid",
+    gridTemplateRows: "auto minmax(0, 1fr)",
+    rowGap: theme(({ space }) => space[1]),
+    position: "fixed",
+    zIndex: 1,
+    top: 0,
+    right: 0,
+    backgroundColor: theme(({ colors }) => colors.backgroundSub),
+    borderRadius: `${theme(({ radii }) => radii.radius1)} 0 0 ${theme(
+      ({ radii }) => radii.radius1
+    )}`,
+    boxShadow: theme(({ shadows }) => shadows.elevationMid),
+    padding: `${theme(({ space }) => space[4])} ${theme(
+      ({ space }) => space[4]
+    )}`,
+    boxSizing: "border-box",
+    transition: `transform 300ms ease`,
+    transform: "translateX(100%)",
+    '&[data-theme="dark"]': {
+      backgroundColor: theme(({ colors }) => colors.backgroundSubDark),
+    },
+  },
+  ".modalAfterOpen": {
+    transform: "translateX(0)",
+  },
+  ".modalBeforeClose": {
+    transform: "translateX(100%)",
+  },
+  ".modalOverlayBase": {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    opacity: 0,
+    transition: `opacity 300ms ease`,
+  },
+  ".modalOverlayAfterOpen": {
+    opacity: 1,
+  },
+  ".modalOverlayBeforeClose": {
+    opacity: 0,
+  },
+  ".modalPortal": {
+    position: "relative",
+    zIndex: 999,
+  },
 });

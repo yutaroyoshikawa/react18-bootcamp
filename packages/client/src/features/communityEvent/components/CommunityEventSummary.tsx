@@ -1,6 +1,6 @@
 import type { CommunityEvent } from "api-server";
 import type { FC } from "react";
-import { Suspense, useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { formatDate } from "../../../lib/date";
 import { css, theme } from "../../../lib/style";
@@ -35,6 +35,7 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
       format: "YYYY/MM/DD HH:mm",
     });
   }, [communityEvent.holdAt]);
+  const toggleRef = useRef<HTMLDivElement>(null);
 
   const requestPostComment = useCallback(
     async (body: string) => {
@@ -107,10 +108,12 @@ export const CommunityEventSummary: FC<CommunityEventSummaryProps> = ({
             timeout={TRANSITION_TIMEOUT}
             onEnter={() => setIsOpenToggle(true)}
             onExited={() => setIsOpenToggle(false)}
+            nodeRef={toggleRef}
           >
             <div
               className={detailsContentsWrapperStyle()}
               data-open={isOpenToggle}
+              ref={toggleRef}
             >
               <CommunityEventCommentForm onSubmit={requestPostComment} />
               {isOpenToggle && (
